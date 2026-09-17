@@ -6,12 +6,15 @@
   "license": "MIT",
   "author": "Ivan C. Sanches",
   "repository": { "type": "git", "url": "git+https://github.com/sanches89/code-measure.git" },
+  "homepage": "https://github.com/sanches89/code-measure#readme",
+  "bugs": { "url": "https://github.com/sanches89/code-measure/issues" },
   "type": "module",
   "bin": { "code-measure": "bin/code-measure.mjs" },
   "files": ["bin", "src"],
   "engines": { "node": ">=20" },
   "scripts": {
     "test": "node --test",
+    "prepublishOnly": "node --test",
     "coverage": "node --test --experimental-test-coverage"
   },
   "dependencies": {

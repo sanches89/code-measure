@@ -27,11 +27,11 @@ reason. It never fails the run.
 Needs Node.js 20 or newer. Run it from the root of the project to measure.
 
 ```bash
-# without installing, pinned to major version 1
-npx --yes "github:sanches89/code-measure#semver:^1" src
+# without installing
+npx code-measure src
 
 # or install once
-npm install --global "github:sanches89/code-measure#semver:^1"
+npm install --global code-measure
 code-measure src
 ```
 
