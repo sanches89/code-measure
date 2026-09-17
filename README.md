@@ -28,10 +28,10 @@ Needs Node.js 20 or newer. Run it from the root of the project to measure.
 
 ```bash
 # without installing, pinned to major version 1
-npx --yes github:sanches89/code-measure#semver:^1 src
+npx --yes "github:sanches89/code-measure#semver:^1" src
 
 # or install once
-npm install --global github:sanches89/code-measure#semver:^1
+npm install --global "github:sanches89/code-measure#semver:^1"
 code-measure src
 ```
 
