@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="all" tests="5" failures="1" errors="1" skipped="1" time="1.5">
+  <testsuite name="outer" tests="5">
+    <testcase classname="outer" name="passes &amp; escapes" time="0.25"/>
+    <testsuite name="inner" tests="4">
+      <testcase classname="inner" name="fails" time="1.0">
+        <failure message="expected 1 > 0">trace with a > sign</failure>
+      </testcase>
+      <testcase classname="inner" name="errors" time="0.125">
+        <error type="TypeError">boom</error>
+      </testcase>
+      <testcase classname="inner" name="is skipped" time="0">
+        <skipped/>
+      </testcase>
+      <testcase classname="inner" name="passes with output" time="0.125">
+        <system-out>hello</system-out>
+      </testcase>
+    </testsuite>
+  </testsuite>
+</testsuites>

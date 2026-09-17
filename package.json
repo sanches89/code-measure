@@ -1,0 +1,21 @@
+{
+  "name": "code-measure",
+  "version": "1.0.0",
+  "description": "Measure a codebase in any language before and after a refactoring: duplication, complexity, hotspots, test results, and line and branch coverage, as one JSON summary.",
+  "keywords": ["refactoring", "duplication", "complexity", "coverage", "hotspots", "junit", "lcov", "cobertura", "jacoco"],
+  "license": "MIT",
+  "author": "Ivan C. Sanches",
+  "repository": { "type": "git", "url": "git+https://github.com/sanches89/code-measure.git" },
+  "type": "module",
+  "bin": { "code-measure": "bin/code-measure.mjs" },
+  "files": ["bin", "src"],
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "test": "node --test",
+    "coverage": "node --test --experimental-test-coverage"
+  },
+  "dependencies": {
+    "fast-xml-parser": "^5.11.1",
+    "jscpd": "^5.2.1"
+  }
+}
