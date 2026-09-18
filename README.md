@@ -24,7 +24,7 @@ reason. It never fails the run.
 
 ## Run
 
-Needs Node.js 20 or newer. Run it from the root of the project to measure.
+Needs Node.js 22.13 or newer. Run it from the root of the project to measure.
 
 ```bash
 # without installing
@@ -267,9 +267,9 @@ asserts the result.
 ## Development
 
 ```bash
-npm install
-npm test            # node --test, no network and no lizard needed
-npm run coverage
+pnpm install
+pnpm test            # node --test, no network and no lizard needed
+pnpm run coverage
 ```
 
 The tests live in `tests/`, with report fixtures in `tests/fixtures/`.
