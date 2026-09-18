@@ -92,25 +92,151 @@ sum by design. It ignores the coverage percentage, because removing covered
 dead code lowers it with no test lost.
 
 `--compare` reuses the limits and the ignore globs of the saved summary, so
-that both runs measure the same way.
+that both runs measure the same way. See
+[Options fixed by `--compare`](#options-fixed-by---compare) for what it does
+and does not carry over.
 
 ## Options
 
-Run `code-measure --help` for every option. The defaults:
+```
+code-measure [options] [<path>...]
+```
+
+Paths are files or folders, relative to the current directory. They default to
+the current directory. A path that does not exist is an error.
+
+### Reports to read
+
+| Option | Repeatable | Meaning |
+|---|---|---|
+| `--test-report <path>` | yes | A JUnit XML file, or a folder: every `*.xml` directly inside it, in name order. Without it, `tests` is `skipped`. |
+| `--coverage-report <file>` | yes | One LCOV, Cobertura XML, JaCoCo XML, or Go cover profile. The format is read from the content, not the file name, and several formats can be mixed in one run. Without it, `coverage` is `skipped`. |
+| `--compare <file>` | no | A summary saved from an earlier run. Adds `delta`, `worse`, and `notCompared`, and exits 3 when `worse` is not empty. |
+
+A report file that does not exist is an error. One that is not the expected
+format leaves its measurement `failed` with a reason, and the run still prints
+a summary and exits 0.
+
+### Limits
+
+A function over any of these is counted in `complexity.overLimit` and listed in
+`complexity.top`. They change what is reported, never what is measured.
 
 | Option | Default | Meaning |
 |---|---|---|
-| `--ccn` | 10 | limit for cyclomatic complexity per function |
-| `--length` | 50 | limit for function length in lines |
-| `--params` | 4 | limit for parameters per function |
-| `--min-tokens`, `--min-lines` | 50, 5 | smallest clone |
-| `--since` | `12 months ago` | git history window for hotspots |
-| `--top` | 20 | entries per list |
-| `--ignore` | none | comma-separated globs to leave out |
-| `--skip` | none | `duplication`, `complexity`, `hotspots` |
+| `--ccn <n>` | 10 | Limit for cyclomatic complexity per function. |
+| `--length <n>` | 50 | Limit for function length in lines. |
+| `--params <n>` | 4 | Limit for parameters per function. |
+| `--min-tokens <n>` | 50 | Smallest clone to report, in tokens. |
+| `--min-lines <n>` | 5 | Smallest clone to report, in lines. |
 
-Exit codes: `0` summary printed, `1` unexpected failure, `2` invalid
-arguments, `3` `--compare` found a worse measurement.
+Each needs a whole number of 1 or more.
+
+### Scope and size
+
+| Option | Default | Meaning |
+|---|---|---|
+| `--ignore <globs>` | none | Comma-separated globs to leave out, such as `"**/generated/**,**/vendor/**"`. Supports `**`, `*`, and `?`. |
+| `--skip <list>` | none | Comma-separated measurements to skip: `duplication`, `complexity`, `hotspots`. `tests` and `coverage` skip themselves when no report is given. |
+| `--since <date>` | `12 months ago` | Start of the git history window for hotspots. Any date `git log --since` accepts. |
+| `--top <n>` | 20 | Entries per list: the clones, the functions over a limit, the hotspots, the failed tests, the least covered files, the files absent from the coverage report, and the functions by CRAP score. `tests.slowest` is always 5. |
+
+### Other
+
+| Option | Meaning |
+|---|---|
+| `-h`, `--help` | Print every option and exit 0. |
+| `-V`, `--version` | Print the version and exit 0. |
+
+### Exit codes
+
+| Code | Meaning |
+|---|---|
+| `0` | Summary printed. A `skipped` or `failed` measurement still exits 0. |
+| `1` | Unexpected failure. |
+| `2` | Invalid arguments: an unknown option, an option without a value, a number below 1, a path or report that does not exist, an unusable `--compare` file, or a limit passed alongside `--compare`. |
+| `3` | `--compare` found at least one measurement that got worse. |
+
+### Options fixed by `--compare`
+
+`--compare` reuses the limits of the saved summary, so that both runs measure
+the same way. Passing `--min-tokens`, `--min-lines`, `--ccn`, `--length`,
+`--params`, or `--ignore` next to it is an error rather than a silent override.
+
+Two things are not fixed: `--since` overrides the saved window when given, and
+paths override the saved paths when given. Pass the new test and coverage
+reports again — `--compare` carries limits, not results.
+
+## Examples
+
+Measure the current directory, every default:
+
+```bash
+code-measure
+```
+
+Measure two folders, and skip a generated tree:
+
+```bash
+code-measure src lib --ignore "**/generated/**,**/*.pb.go"
+```
+
+Stricter limits than the defaults, more entries per list:
+
+```bash
+code-measure src --ccn 8 --length 40 --params 3 --top 40
+```
+
+Only duplication, with a lower clone floor to catch smaller copies:
+
+```bash
+code-measure src --skip complexity,hotspots --min-tokens 30 --min-lines 3
+```
+
+Only hotspots, over one release cycle instead of a year:
+
+```bash
+code-measure src --skip duplication,complexity --since "2024-01-01"
+```
+
+Tests and coverage from one Vitest run:
+
+```bash
+npx vitest run \
+  --reporter=junit --outputFile=/tmp/junit.xml \
+  --coverage --coverage.reporter=lcov --coverage.reportsDirectory=/tmp/cov
+code-measure src \
+  --test-report /tmp/junit.xml \
+  --coverage-report /tmp/cov/lcov.info
+```
+
+Vitest needs `@vitest/coverage-v8` installed before `--coverage` works, and its
+v8 provider may report only the files the tests import. Add
+`--coverage.include='src/**'` when the coverage report covers fewer files than
+`files` in the summary.
+
+A folder of JUnit reports, and a coverage report per package, from a monorepo
+where each workspace writes its own:
+
+```bash
+code-measure apps packages \
+  --test-report /tmp/reports \
+  --coverage-report apps/api/coverage/lcov.info \
+  --coverage-report apps/web/coverage/lcov.info
+```
+
+Fail a CI job when the refactoring made something worse:
+
+```bash
+code-measure src --test-report /tmp/junit.xml --compare baseline.json > after.json \
+  || { echo "a measurement got worse:"; jq -r '.worse[]' after.json; exit 1; }
+```
+
+Read a single number out of the summary:
+
+```bash
+code-measure src --skip duplication,hotspots | jq '.complexity.overLimit.ccn'
+```
 
 ## The summary
 
