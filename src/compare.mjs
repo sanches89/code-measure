@@ -1,4 +1,5 @@
 // The values that --compare checks. A value is worse when it rises. "falls" marks the ones that are worse when they fall.
+// Sums and percentages stay out on purpose: README.md, "What `--compare` checks", says why.
 const PAIRS = [
   ["duplication.duplicatedLines", (s) => s.duplication?.duplicatedLines, "duplication"],
   ["duplication.clones", (s) => s.duplication?.clones, "duplication"],

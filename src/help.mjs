@@ -9,7 +9,8 @@ Measurements:
   complexity   lizard: per function cyclomatic complexity (ccn), length in
                lines, and parameter count, against the limits below.
                Runs "lizard" from PATH, else "uvx lizard", else
-               "pipx run lizard", else "python3 -m lizard".
+               "pipx run lizard", else "python3 -m lizard", else
+               "python -m lizard".
   hotspots     git: commits per file since --since, multiplied by the file's
                summed ccn, or by its non-blank lines when lizard did not run.
   tests        Test results from JUnit XML reports that the project's own

@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "skills": {
+    "agent-docs": {
+      "source": "sanches89/ai-skills",
+      "sourceType": "github",
+      "skillPath": "skills/agent-docs/SKILL.md",
+      "computedHash": "fbced51ae29f97d1962fe3dfcf74fc59d029c2ae74d748217c3b4d18b4c9615c"
+    },
+    "glossary": {
+      "source": "sanches89/ai-skills",
+      "sourceType": "github",
+      "skillPath": "skills/glossary/SKILL.md",
+      "computedHash": "afcf2806c4b67cb3097658293cf223135b02f6889234d43f5e63d4323dce420f"
+    },
+    "unambiguity": {
+      "source": "sanches89/ai-skills",
+      "sourceType": "github",
+      "skillPath": "skills/unambiguity/SKILL.md",
+      "computedHash": "10aeaea70e4a4e0f0c9e9592d3bc99d5e43001cddaa94e9267818d0c957eac18"
+    }
+  }
+}

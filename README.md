@@ -19,11 +19,11 @@ prints one JSON summary with six measurements:
   and each surviving mutant, from Stryker, PIT, cargo-mutants, or Infection
   reports.
 
-A second run with `--compare` says which measurement got worse and exits 3.
+A second run with `--compare` names each value that got worse and exits 3.
 
 The tool changes no file of the measured project and installs nothing into
-it. A measurement whose tool or report is missing is marked `skipped` with a
-reason. It never fails the run.
+it. A measurement whose tool is not found, or whose report is not given, is
+marked `skipped` with a reason. It never fails the run.
 
 ## Run
 
@@ -39,8 +39,9 @@ code-measure src
 ```
 
 Complexity needs lizard. The tool runs `lizard` from `PATH`, else
-`uvx lizard`, else `pipx run lizard`, else `python3 -m lizard`. Install
-[uv](https://docs.astral.sh/uv/) or pipx to enable it.
+`uvx lizard`, else `pipx run lizard`, else `python3 -m lizard`, else
+`python -m lizard`. Install [uv](https://docs.astral.sh/uv/) or pipx to
+enable it.
 
 ## Before and after
 
@@ -64,8 +65,8 @@ echo $?   # 3 when a measurement got worse
 ```
 
 The tool never runs the tests or the mutation tool. It reads the reports that
-the project's own test command wrote. Nearly every test runner writes JUnit XML, and one of
-LCOV, Cobertura, or JaCoCo:
+the project's own test command wrote. Nearly every test runner writes JUnit
+XML, and one of LCOV, Cobertura, JaCoCo, or a Go cover profile:
 
 | Test runner | Options |
 |---|---|
@@ -126,8 +127,10 @@ a summary and exits 0.
 
 ### Limits
 
-A function over any of these is counted in `complexity.overLimit` and listed in
-`complexity.top`. They change what is reported, never what is measured.
+A function over `--ccn`, `--length`, or `--params` is counted in
+`complexity.overLimit` and listed in `complexity.top`. Those three change what
+is reported, never what is measured. `--min-tokens` and `--min-lines` set the
+smallest clone jscpd counts, so they change the `duplication` numbers.
 
 | Option | Default | Meaning |
 |---|---|---|
@@ -161,7 +164,7 @@ Each needs a whole number of 1 or more.
 |---|---|
 | `0` | Summary printed. A `skipped` or `failed` measurement still exits 0. |
 | `1` | Unexpected failure. |
-| `2` | Invalid arguments: an unknown option, an option without a value, a number below 1, a path or report that does not exist, an unusable `--compare` file, or a limit passed alongside `--compare`. |
+| `2` | Invalid arguments: an unknown option, an option without a value, a number that is not a whole number of 1 or more, an unknown `--skip` name, a path or report that does not exist, an unusable `--compare` file, or a limit or `--ignore` passed alongside `--compare`. |
 | `3` | `--compare` found at least one measurement that got worse. |
 
 ### Options fixed by `--compare`
@@ -257,12 +260,17 @@ code-measure src --skip duplication,hotspots | jq '.complexity.overLimit.ccn'
 
 The summary has `"version": 1`. Every measurement has a `status` of `ok`,
 `skipped`, or `failed`, and a `reason` for every status other than `ok`.
+`delta`, `worse`, and `notCompared` appear only with `--compare`. The example
+below leaves some fields out and empties most lists.
 
 ```json
 {
   "version": 1,
   "tool": "code-measure 1.0.0",
   "paths": ["src"],
+  "settings": { "top": 20, "minTokens": 50, "minLines": 5, "ccn": 10,
+    "length": 50, "params": 4, "since": "12 months ago", "ignore": [] },
+  "files": 57,
   "duplication": { "status": "ok", "duplicatedLines": 17, "clones": 1, "top": [] },
   "complexity": { "status": "ok", "functions": 441, "maxCcn": 15,
     "overLimit": { "ccn": 4, "length": 10, "params": 2 }, "top": [] },
@@ -297,13 +305,28 @@ the function the report names), the mutator, and the change.
 
 ## Development
 
+Needs Node.js 22.13 or newer, and pnpm (`packageManager` in `package.json`
+pins its version).
+
 ```bash
 pnpm install
-pnpm test            # node --test, no network and no lizard needed
-pnpm run coverage
+pnpm test
+node bin/code-measure.mjs src   # the CLI, from this checkout
 ```
 
-The tests live in `tests/`, with report fixtures in `tests/fixtures/`.
+| Script | Runs |
+|---|---|
+| `pnpm test` | `node --test`, over every `tests/*.test.mjs`, with no network and no lizard |
+| `pnpm run coverage` | the tests, with Node's coverage table |
+| `prepublishOnly` | the tests, before `npm publish` |
+
+Before pushing, run `pnpm test`. CI runs it on Node 22 and 24.
+
+- Report fixtures live in `tests/fixtures/reports/`, and a small project to
+  measure in `tests/fixtures/project/`.
+- A push to `main` runs semantic-release (`.releaserc.json`). It reads the
+  Conventional Commit subjects, publishes to npm, and commits the new
+  `version` and `CHANGELOG.md`.
 
 ## License
 
