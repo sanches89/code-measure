@@ -2,16 +2,38 @@
   "name": "code-measure",
   "version": "1.0.0",
   "description": "Measure a codebase in any language before and after a refactoring: duplication, complexity, hotspots, test results, and line and branch coverage, as one JSON summary.",
-  "keywords": ["refactoring", "duplication", "complexity", "coverage", "hotspots", "junit", "lcov", "cobertura", "jacoco"],
+  "keywords": [
+    "refactoring",
+    "duplication",
+    "complexity",
+    "coverage",
+    "hotspots",
+    "junit",
+    "lcov",
+    "cobertura",
+    "jacoco"
+  ],
   "license": "MIT",
   "author": "Ivan C. Sanches",
-  "repository": { "type": "git", "url": "git+https://github.com/sanches89/code-measure.git" },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sanches89/code-measure.git"
+  },
   "homepage": "https://github.com/sanches89/code-measure#readme",
-  "bugs": { "url": "https://github.com/sanches89/code-measure/issues" },
+  "bugs": {
+    "url": "https://github.com/sanches89/code-measure/issues"
+  },
   "type": "module",
-  "bin": { "code-measure": "bin/code-measure.mjs" },
-  "files": ["bin", "src"],
-  "engines": { "node": ">=22.13" },
+  "bin": {
+    "code-measure": "bin/code-measure.mjs"
+  },
+  "files": [
+    "bin",
+    "src"
+  ],
+  "engines": {
+    "node": ">=22.13"
+  },
   "packageManager": "pnpm@11.22.0",
   "scripts": {
     "test": "node --test",
@@ -21,5 +43,11 @@
   "dependencies": {
     "fast-xml-parser": "^5.11.1",
     "jscpd": "^5.2.1"
+  },
+  "devDependencies": {
+    "@semantic-release/changelog": "^7.0.0",
+    "@semantic-release/git": "^11.0.1",
+    "conventional-changelog-conventionalcommits": "^9.3.1",
+    "semantic-release": "^25.0.9"
   }
 }
