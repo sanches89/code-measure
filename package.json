@@ -1,6 +1,6 @@
 {
   "name": "code-measure",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Measure a codebase in any language before and after a refactoring: duplication, complexity, hotspots, test results, line and branch coverage, and mutation score, as one JSON summary.",
   "keywords": [
     "refactoring",
