@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from "node:fs";
 
 export const MEASUREMENTS = ["duplication", "complexity", "hotspots"];
-const VALUE_OPTIONS = ["--compare", "--test-report", "--coverage-report", "--ignore", "--skip", "--top", "--min-tokens", "--min-lines", "--ccn", "--length", "--params", "--since"];
+const VALUE_OPTIONS = ["--compare", "--test-report", "--coverage-report", "--mutation-report", "--ignore", "--skip", "--top", "--min-tokens", "--min-lines", "--ccn", "--length", "--params", "--since"];
 const NUMBER_OPTIONS = { "--top": "top", "--min-tokens": "minTokens", "--min-lines": "minLines", "--ccn": "ccn", "--length": "length", "--params": "params" };
 const FIXED_BY_COMPARE = ["--min-tokens", "--min-lines", "--ccn", "--length", "--params", "--ignore"];
 
@@ -30,6 +30,7 @@ const HANDLERS = {
   "--compare": (result, value) => (result.compareFile = value),
   "--test-report": (result, value) => result.testReports.push(value),
   "--coverage-report": (result, value) => result.coverageReports.push(value),
+  "--mutation-report": (result, value) => result.mutationReports.push(value),
   "--since": (result, value) => (result.settings.since = value),
   "--ignore": (result, value) => (result.settings.ignore = list(value)),
   "--skip": (result, value) => (result.skip = readSkip(value)),
@@ -37,7 +38,7 @@ const HANDLERS = {
 
 /** Read every option and path of the command line. `given` collects the names of the options seen. */
 const readOptions = (argv, given) => {
-  const result = { settings: { ...DEFAULTS }, paths: [], skip: [], testReports: [], coverageReports: [], before: null, compareFile: null };
+  const result = { settings: { ...DEFAULTS }, paths: [], skip: [], testReports: [], coverageReports: [], mutationReports: [], before: null, compareFile: null };
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
     if (!arg.startsWith("-")) {
@@ -72,14 +73,14 @@ const applyBefore = (result, given) => {
   result.before = before;
 };
 
-const checkExists = ({ paths, testReports, coverageReports }) => {
+const checkExists = ({ paths, testReports, coverageReports, mutationReports }) => {
   const missing = paths.filter((path) => !existsSync(path));
   if (missing.length) throw new UsageError(`path not found: ${missing.join(", ")}. Give paths relative to the current directory.`);
-  const missingReports = [...testReports, ...coverageReports].filter((path) => !existsSync(path));
+  const missingReports = [...testReports, ...coverageReports, ...mutationReports].filter((path) => !existsSync(path));
   if (missingReports.length) throw new UsageError(`report not found: ${missingReports.join(", ")}. Run the project's test command first and pass the report file it wrote.`);
 };
 
-/** Parse the command line into { settings, paths, skip, testReports, coverageReports, before }. */
+/** Parse the command line into { settings, paths, skip, testReports, coverageReports, mutationReports, before }. */
 export const parseArgs = (argv) => {
   const given = new Set();
   const { compareFile, ...result } = readOptions(argv, given);

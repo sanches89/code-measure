@@ -4,7 +4,7 @@ import { collect, parseXml } from "./xml.mjs";
 
 export const notRequested = (flag) => ({ status: "skipped", reason: `no ${flag} given`, notRequested: true });
 
-const oneLine = (text) => String(text ?? "").replace(/\s+/g, " ").trim().slice(0, 160);
+export const oneLine = (text) => String(text ?? "").replace(/\s+/g, " ").trim().slice(0, 160);
 const has = (testcase, tag) => Object.hasOwn(testcase, tag);
 
 /** Test cases of one JUnit XML text, as { name, outcome, seconds }. Suites nest to any depth. */

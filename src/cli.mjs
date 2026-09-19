@@ -7,13 +7,14 @@ import { measureDuplication } from "./duplication.mjs";
 import { insideGit, isCode, listFiles, rel } from "./files.mjs";
 import { HELP } from "./help.mjs";
 import { measureHotspots } from "./hotspots.mjs";
+import { measureMutation } from "./mutation/index.mjs";
 import { measureTests } from "./tests.mjs";
 
 const VERSION = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8")).version;
 const SKIPPED = { status: "skipped", reason: "named in --skip" };
 
 /** Measure everything the options ask for. Returns the summary. */
-export const measure = ({ settings, paths, skip, testReports, coverageReports, before }) => {
+export const measure = ({ settings, paths, skip, testReports, coverageReports, mutationReports, before }) => {
   const inGit = insideGit();
   const files = listFiles(paths, settings.ignore, inGit);
   const codeFiles = files.filter(isCode);
@@ -24,7 +25,9 @@ export const measure = ({ settings, paths, skip, testReports, coverageReports, b
   summary.complexity = complexity;
   summary.hotspots = skip.includes("hotspots") ? SKIPPED : measureHotspots({ paths, codeFiles, perFile: perFile ?? null, settings, inGit });
   summary.tests = measureTests(testReports, settings);
-  summary.coverage = measureCoverage({ coverageReports, codeFiles, functions: all ?? null, everyFile: () => listFiles(["."], [], inGit), settings });
+  const everyFile = () => listFiles(["."], [], inGit);
+  summary.coverage = measureCoverage({ coverageReports, codeFiles, functions: all ?? null, everyFile, settings });
+  summary.mutation = measureMutation({ mutationReports, codeFiles, functions: all ?? null, everyFile, settings });
 
   if (before) Object.assign(summary, compare(before, summary));
   return summary;

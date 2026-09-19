@@ -40,6 +40,17 @@ test("a run prints one JSON summary with the tests and the coverage of the paths
   assert.equal(summary.coverage.branches.percentage, 75);
 });
 
+test("a run with --mutation-report prints the mutation part, and a missing mutation report exits 2", () => {
+  const result = cli("src", ...SKIP, "--mutation-report", fixture("reports/stryker.json"));
+  assert.equal(result.status, 0);
+  const { mutation } = JSON.parse(result.stdout);
+  assert.deepEqual([mutation.status, mutation.format, mutation.mutants, mutation.survived, mutation.score], ["ok", "stryker", 11, 4, 45.45]);
+
+  const missing = cli("src", ...SKIP, "--mutation-report", "no-such.json");
+  assert.equal(missing.status, 2);
+  assert.match(missing.stderr, /^Error: report not found: no-such.json/);
+});
+
 test("--compare exits 3 and names what got worse when a test is gone and a line lost its coverage", (t) => {
   const dir = mkdtempSync(join(tmpdir(), "code-measure-test-"));
   t.after(() => rmSync(dir, { recursive: true, force: true }));

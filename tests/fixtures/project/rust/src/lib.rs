@@ -1,0 +1,13 @@
+pub fn clamp(value: i32, low: i32, high: i32) -> i32 {
+    if value < low {
+        return low;
+    }
+    if value > high {
+        return high;
+    }
+    value
+}
+
+pub fn is_even(n: u32) -> bool {
+    n % 2 == 0
+}

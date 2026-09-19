@@ -6,4 +6,9 @@ public class Calc {
     }
     return a;
   }
+  static class Helper {
+    int twice(int a) {
+      return a * 2;
+    }
+  }
 }

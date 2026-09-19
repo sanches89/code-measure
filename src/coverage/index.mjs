@@ -4,7 +4,7 @@ import { addBranch, addLine, entryFor } from "./data.mjs";
 import { readReport } from "./formats.mjs";
 import { createResolver } from "./resolve.mjs";
 
-const percent = (covered, total) => (total ? Number(((100 * covered) / total).toFixed(2)) : null);
+export const percent = (covered, total) => (total ? Number(((100 * covered) / total).toFixed(2)) : null);
 
 /** CRAP = ccn^2 * (1 - coverage)^3 + ccn, with coverage as a ratio from 0 to 1. */
 export const crap = (ccn, ratio) => Number((ccn ** 2 * (1 - ratio) ** 3 + ccn).toFixed(1));

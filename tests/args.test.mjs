@@ -15,13 +15,14 @@ test("parseArgs returns the defaults and the current directory without arguments
 });
 
 test("parseArgs reads limits, globs, skips, and repeated reports", () => {
-  const args = parseArgs(["src", "--ccn", "7", "--ignore", "**/gen/**, **/vendor/**", "--skip", "hotspots,complexity", "--test-report", "package.json", "--test-report", "src", "--coverage-report", "package.json"]);
+  const args = parseArgs(["src", "--ccn", "7", "--ignore", "**/gen/**, **/vendor/**", "--skip", "hotspots,complexity", "--test-report", "package.json", "--test-report", "src", "--coverage-report", "package.json", "--mutation-report", "package.json", "--mutation-report", "README.md"]);
   assert.deepEqual(args.paths, ["src"]);
   assert.equal(args.settings.ccn, 7);
   assert.deepEqual(args.settings.ignore, ["**/gen/**", "**/vendor/**"]);
   assert.deepEqual(args.skip, ["hotspots", "complexity"]);
   assert.deepEqual(args.testReports, ["package.json", "src"]);
   assert.deepEqual(args.coverageReports, ["package.json"]);
+  assert.deepEqual(args.mutationReports, ["package.json", "README.md"]);
 });
 
 test("parseArgs rejects an unknown option", () => usageError(["--bogus"], /unknown option --bogus/));
@@ -30,6 +31,7 @@ test("parseArgs rejects a limit that is not a whole number", () => usageError(["
 test("parseArgs rejects an unknown measurement in --skip", () => usageError(["--skip", "foo"], /--skip got foo/));
 test("parseArgs rejects a path that does not exist", () => usageError(["no-such-folder"], /path not found: no-such-folder/));
 test("parseArgs rejects a report that does not exist", () => usageError(["--coverage-report", "no-such.info"], /report not found: no-such.info/));
+test("parseArgs rejects a mutation report that does not exist", () => usageError(["--mutation-report", "no-such.json"], /report not found: no-such.json/));
 
 test("parseArgs with --compare reuses the limits and the paths of the saved summary", (t) => {
   const dir = mkdtempSync(join(tmpdir(), "code-measure-test-"));

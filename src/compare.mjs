@@ -11,6 +11,8 @@ const PAIRS = [
   ["tests.skipped", (s) => s.tests?.skipped, "tests"],
   ["coverage.lines.uncovered", (s) => s.coverage?.lines?.uncovered, "coverage"],
   ["coverage.branches.uncovered", (s) => s.coverage?.branches?.uncovered, "coverage"],
+  ["mutation.survived", (s) => s.mutation?.survived, "mutation"],
+  ["mutation.noCoverage", (s) => s.mutation?.noCoverage, "mutation"],
 ];
 
 /** Compare two summaries. Returns { delta, worse, notCompared }. */

@@ -20,9 +20,15 @@ Measurements:
                LCOV, Cobertura XML, JaCoCo XML, and Go cover profiles. With
                lizard it adds coverage and CRAP score per function, where
                CRAP = ccn^2 * (1 - coverage)^3 + ccn. Needs --coverage-report.
+  mutation     Mutants of the files under the paths, from reports that the
+               project's own mutation tool wrote: killed, timed out,
+               survived, not covered, invalid, ignored, the mutation score,
+               and each surviving mutant with its file, line, and function.
+               Reads Stryker JSON, PIT mutations.xml, cargo-mutants
+               outcomes.json, and Infection JSON logs. Needs --mutation-report.
 
-This tool never runs the tests. Run the project's test command first, then
-pass the report files it wrote.
+This tool never runs the tests or the mutation tool. Run the project's test
+or mutation command first, then pass the report files it wrote.
 
 A measurement whose tool or report is missing gets "status": "skipped" and a
 reason. It never fails the run.
@@ -38,6 +44,10 @@ Options:
   --coverage-report <file>
                       A coverage report: LCOV, Cobertura XML, JaCoCo XML, or
                       a Go cover profile. Repeatable.
+  --mutation-report <file>
+                      A mutation report: Stryker JSON, PIT mutations.xml,
+                      cargo-mutants outcomes.json, or an Infection JSON log.
+                      Repeatable.
   --ignore <globs>    Comma-separated globs to leave out, such as
                       "**/generated/**,**/vendor/**". Supports **, * and ?.
   --skip <list>       Comma-separated measurements to skip: duplication,
@@ -65,4 +75,5 @@ Examples:
   code-measure src lib/new-file.ts --compare /tmp/before.json > /tmp/after.json
   code-measure --skip hotspots --ignore "**/gen/**"
   code-measure src --test-report /tmp/junit.xml --coverage-report /tmp/lcov.info
+  code-measure src --mutation-report reports/mutation/mutation.json
 `;

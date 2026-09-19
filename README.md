@@ -1,7 +1,7 @@
 # code-measure
 
 Measure a codebase in any language before and after a refactoring. One command
-prints one JSON summary with five measurements:
+prints one JSON summary with six measurements:
 
 - **duplication**: duplicated lines and the largest clones, from
   [jscpd](https://github.com/kucherenko/jscpd), which reads more than 200
@@ -15,6 +15,9 @@ prints one JSON summary with five measurements:
   or Go cover profile reports. With lizard, also coverage and
   [CRAP score](https://testing.googleblog.com/2011/02/this-code-is-crap.html)
   per function.
+- **mutation**: mutants killed, survived, and not covered, the mutation score,
+  and each surviving mutant, from Stryker, PIT, cargo-mutants, or Infection
+  reports.
 
 A second run with `--compare` says which measurement got worse and exits 3.
 
@@ -60,8 +63,8 @@ code-measure src \
 echo $?   # 3 when a measurement got worse
 ```
 
-The tool never runs the tests. It reads the reports that the project's own
-test command wrote. Nearly every test runner writes JUnit XML, and one of
+The tool never runs the tests or the mutation tool. It reads the reports that
+the project's own test command wrote. Nearly every test runner writes JUnit XML, and one of
 LCOV, Cobertura, or JaCoCo:
 
 | Test runner | Options |
@@ -86,10 +89,13 @@ LCOV, Cobertura, or JaCoCo:
 | `tests.total` | it falls: a test is gone |
 | `tests.failed`, `tests.skipped` | it rises |
 | `coverage.lines.uncovered`, `coverage.branches.uncovered` | it rises |
+| `mutation.survived`, `mutation.noCoverage` | it rises |
 
 It ignores the sum of complexity, because extracting a function raises that
 sum by design. It ignores the coverage percentage, because removing covered
-dead code lowers it with no test lost.
+dead code lowers it with no test lost. It ignores the mutation score for the
+same reason: removing code whose mutants the tests kill lowers it with no
+assertion lost.
 
 `--compare` reuses the limits and the ignore globs of the saved summary, so
 that both runs measure the same way. See
@@ -111,6 +117,7 @@ the current directory. A path that does not exist is an error.
 |---|---|---|
 | `--test-report <path>` | yes | A JUnit XML file, or a folder: every `*.xml` directly inside it, in name order. Without it, `tests` is `skipped`. |
 | `--coverage-report <file>` | yes | One LCOV, Cobertura XML, JaCoCo XML, or Go cover profile. The format is read from the content, not the file name, and several formats can be mixed in one run. Without it, `coverage` is `skipped`. |
+| `--mutation-report <file>` | yes | One Stryker mutation-testing-report JSON (StrykerJS, Stryker.NET, Stryker4s), PIT `mutations.xml`, cargo-mutants `mutants.out/outcomes.json`, or Infection JSON log. The format is read from the content, and several formats can be mixed in one run. Without it, `mutation` is `skipped`. |
 | `--compare <file>` | no | A summary saved from an earlier run. Adds `delta`, `worse`, and `notCompared`, and exits 3 when `worse` is not empty. |
 
 A report file that does not exist is an error. One that is not the expected
@@ -137,9 +144,9 @@ Each needs a whole number of 1 or more.
 | Option | Default | Meaning |
 |---|---|---|
 | `--ignore <globs>` | none | Comma-separated globs to leave out, such as `"**/generated/**,**/vendor/**"`. Supports `**`, `*`, and `?`. |
-| `--skip <list>` | none | Comma-separated measurements to skip: `duplication`, `complexity`, `hotspots`. `tests` and `coverage` skip themselves when no report is given. |
+| `--skip <list>` | none | Comma-separated measurements to skip: `duplication`, `complexity`, `hotspots`. `tests`, `coverage`, and `mutation` skip themselves when no report is given. |
 | `--since <date>` | `12 months ago` | Start of the git history window for hotspots. Any date `git log --since` accepts. |
-| `--top <n>` | 20 | Entries per list: the clones, the functions over a limit, the hotspots, the failed tests, the least covered files, the files absent from the coverage report, and the functions by CRAP score. `tests.slowest` is always 5. |
+| `--top <n>` | 20 | Entries per list: the clones, the functions over a limit, the hotspots, the failed tests, the least covered files, the files absent from the coverage report, the functions by CRAP score, the files with surviving or uncovered mutants, and the surviving mutants. `tests.slowest` is always 5. |
 
 ### Other
 
@@ -164,8 +171,8 @@ the same way. Passing `--min-tokens`, `--min-lines`, `--ccn`, `--length`,
 `--params`, or `--ignore` next to it is an error rather than a silent override.
 
 Two things are not fixed: `--since` overrides the saved window when given, and
-paths override the saved paths when given. Pass the new test and coverage
-reports again — `--compare` carries limits, not results.
+paths override the saved paths when given. Pass the new test, coverage, and
+mutation reports again — `--compare` carries limits, not results.
 
 ## Examples
 
@@ -232,6 +239,14 @@ code-measure src --test-report /tmp/junit.xml --compare baseline.json > after.js
   || { echo "a measurement got worse:"; jq -r '.worse[]' after.json; exit 1; }
 ```
 
+Mutation score and surviving mutants from one StrykerJS run, which writes
+`reports/mutation/mutation.json` with the json reporter:
+
+```bash
+npx stryker run --reporters json,clear-text
+code-measure src --mutation-report reports/mutation/mutation.json
+```
+
 Read a single number out of the summary:
 
 ```bash
@@ -257,12 +272,28 @@ The summary has `"version": 1`. Every measurement has a `status` of `ok`,
     "lines": { "total": 18, "covered": 9, "uncovered": 9, "percentage": 50 },
     "branches": { "total": 8, "covered": 6, "uncovered": 2, "percentage": 75 },
     "functions": { "covered": 62, "partly": 20, "none": 3, "top": [] } },
+  "mutation": { "status": "ok", "format": "stryker", "files": 12,
+    "mutants": 340, "killed": 250, "timeout": 10, "survived": 60,
+    "noCoverage": 20, "invalid": 6, "ignored": 4, "score": 76.47,
+    "top": [{ "file": "src/parse.ts", "mutants": 40, "survived": 12,
+      "noCoverage": 3, "score": 62.5 }],
+    "survivors": [{ "file": "src/parse.ts", "line": 42, "function": "parseDate",
+      "mutator": "EqualityOperator", "change": "a > b" }] },
   "delta": {}, "worse": [], "notCompared": []
 }
 ```
 
 A coverage report proves that a test runs a line. It never proves that a test
-asserts the result.
+asserts the result. A mutation report does: a mutant that survives is a change
+to a covered line that no assertion catches.
+
+In `mutation`, `mutants` counts the mutants that reached a verdict: `killed`,
+`timeout`, `survived`, and `noCoverage`. `score` is the share of them killed or
+timed out. `invalid` mutants did not compile or crashed the runner, and
+`ignored` ones never ran: both stay out of `mutants` and `score`. A mutant that
+two reports name counts once, with its most detected status. `survivors` gives
+each surviving mutant's line, the innermost lizard function around it (else
+the function the report names), the mutator, and the change.
 
 ## Development
 

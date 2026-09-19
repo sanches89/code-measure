@@ -1,0 +1,96 @@
+{
+  "stats": {
+    "totalMutantsCount": 7,
+    "killedCount": 2,
+    "killedByStaticAnalysisCount": 1,
+    "notCoveredCount": 1,
+    "escapedCount": 1,
+    "errorCount": 0,
+    "syntaxErrorCount": 0,
+    "skippedCount": 1,
+    "ignoredCount": 0,
+    "timeOutCount": 1,
+    "msi": 66.67,
+    "mutationCodeCoverage": 83.33,
+    "coveredCodeMsi": 80
+  },
+  "escaped": [
+    {
+      "mutator": {
+        "mutatorName": "LessThan",
+        "originalSourceCode": "",
+        "mutatedSourceCode": "",
+        "originalFilePath": "/home/user/projects/demo/src/Calc.php",
+        "originalStartLine": 11
+      },
+      "diff": "--- Original\n+++ New\n@@ @@\n     public function abs(int $a): int\n     {\n-        if ($a < 0) {\n+        if ($a <= 0) {\n             return -$a;\n         }\n",
+      "processOutput": "PHPUnit 11.5.2 by Sebastian Bergmann and contributors.\n\n..                                                                  2 / 2 (100%)\n\nOK (2 tests, 2 assertions)"
+    }
+  ],
+  "timeouted": [
+    {
+      "mutator": {
+        "mutatorName": "DecrementInteger",
+        "originalSourceCode": "",
+        "mutatedSourceCode": "",
+        "originalFilePath": "/home/user/projects/demo/src/Calc.php",
+        "originalStartLine": 11
+      },
+      "diff": "--- Original\n+++ New\n@@ @@\n     public function abs(int $a): int\n     {\n-        if ($a < 0) {\n+        if ($a < -1) {\n             return -$a;\n         }\n",
+      "processOutput": ""
+    }
+  ],
+  "killed": [
+    {
+      "mutator": {
+        "mutatorName": "LessThanNegotiation",
+        "originalSourceCode": "",
+        "mutatedSourceCode": "",
+        "originalFilePath": "/home/user/projects/demo/src/Calc.php",
+        "originalStartLine": 11
+      },
+      "diff": "--- Original\n+++ New\n@@ @@\n     public function abs(int $a): int\n     {\n-        if ($a < 0) {\n+        if ($a >= 0) {\n             return -$a;\n         }\n",
+      "processOutput": "PHPUnit 11.5.2 by Sebastian Bergmann and contributors.\n\nF\n\nFAILURES!\nTests: 1, Assertions: 1, Failures: 1."
+    },
+    {
+      "mutator": {
+        "mutatorName": "UnaryMinus",
+        "originalSourceCode": "",
+        "mutatedSourceCode": "",
+        "originalFilePath": "/home/user/projects/demo/src/Calc.php",
+        "originalStartLine": 12
+      },
+      "diff": "--- Original\n+++ New\n@@ @@\n         if ($a < 0) {\n-            return -$a;\n+            return $a;\n         }\n",
+      "processOutput": "PHPUnit 11.5.2 by Sebastian Bergmann and contributors.\n\nF\n\nFAILURES!\nTests: 1, Assertions: 1, Failures: 1."
+    }
+  ],
+  "killedByStaticAnalysis": [
+    {
+      "mutator": {
+        "mutatorName": "PublicVisibility",
+        "originalSourceCode": "",
+        "mutatedSourceCode": "",
+        "originalFilePath": "/home/user/projects/demo/src/Calc.php",
+        "originalStartLine": 9
+      },
+      "diff": "--- Original\n+++ New\n@@ @@\n-    public function abs(int $a): int\n+    protected function abs(int $a): int\n     {\n",
+      "processOutput": ""
+    }
+  ],
+  "errored": [],
+  "syntaxErrors": [],
+  "uncovered": [
+    {
+      "mutator": {
+        "mutatorName": "IncrementInteger",
+        "originalSourceCode": "",
+        "mutatedSourceCode": "",
+        "originalFilePath": "/home/user/projects/demo/src/Calc.php",
+        "originalStartLine": 11
+      },
+      "diff": "--- Original\n+++ New\n@@ @@\n     public function abs(int $a): int\n     {\n-        if ($a < 0) {\n+        if ($a < 1) {\n             return -$a;\n         }\n",
+      "processOutput": ""
+    }
+  ],
+  "ignored": []
+}

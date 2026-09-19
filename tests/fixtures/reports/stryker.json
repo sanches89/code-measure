@@ -1,0 +1,351 @@
+{
+  "schemaVersion": "2",
+  "thresholds": {
+    "high": 80,
+    "low": 60,
+    "break": null
+  },
+  "projectRoot": "/home/user/projects/demo",
+  "files": {
+    "src/calc.mjs": {
+      "language": "javascript",
+      "source": "export function grade(score) {\n  if (score < 0 || score > 100) {\n    throw new RangeError(\"score out of range\");\n  }\n  if (score >= 90) return \"A\";\n  if (score >= 80) return \"B\";\n  if (score >= 70) {\n    return \"C\";\n  }\n  return \"F\";\n}\n\nexport function neverCalled(a, b) {\n  if (a > b) {\n    return a - b;\n  }\n  return b - a;\n}\n",
+      "mutants": [
+        {
+          "id": "0",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "false",
+          "location": {
+            "start": {
+              "line": 2,
+              "column": 7
+            },
+            "end": {
+              "line": 2,
+              "column": 31
+            }
+          },
+          "status": "Killed",
+          "static": false,
+          "coveredBy": [
+            "0",
+            "1",
+            "2"
+          ],
+          "testsCompleted": 1,
+          "killedBy": [
+            "2"
+          ]
+        },
+        {
+          "id": "1",
+          "mutatorName": "LogicalOperator",
+          "replacement": "score < 0 && score > 100",
+          "location": {
+            "start": {
+              "line": 2,
+              "column": 7
+            },
+            "end": {
+              "line": 2,
+              "column": 31
+            }
+          },
+          "status": "Survived",
+          "static": false,
+          "coveredBy": [
+            "0",
+            "1",
+            "2"
+          ],
+          "testsCompleted": 3
+        },
+        {
+          "id": "2",
+          "mutatorName": "EqualityOperator",
+          "replacement": "score <= 0",
+          "location": {
+            "start": {
+              "line": 2,
+              "column": 7
+            },
+            "end": {
+              "line": 2,
+              "column": 16
+            }
+          },
+          "status": "Survived",
+          "static": false,
+          "coveredBy": [
+            "0",
+            "1",
+            "2"
+          ],
+          "testsCompleted": 3
+        },
+        {
+          "id": "3",
+          "mutatorName": "StringLiteral",
+          "replacement": "\"\"",
+          "location": {
+            "start": {
+              "line": 3,
+              "column": 26
+            },
+            "end": {
+              "line": 3,
+              "column": 46
+            }
+          },
+          "status": "Killed",
+          "static": false,
+          "coveredBy": [
+            "0",
+            "1",
+            "2"
+          ],
+          "testsCompleted": 1,
+          "killedBy": [
+            "2"
+          ]
+        },
+        {
+          "id": "4",
+          "mutatorName": "EqualityOperator",
+          "replacement": "score > 90",
+          "location": {
+            "start": {
+              "line": 5,
+              "column": 7
+            },
+            "end": {
+              "line": 5,
+              "column": 18
+            }
+          },
+          "status": "Survived",
+          "static": false,
+          "coveredBy": [
+            "0",
+            "1",
+            "2"
+          ],
+          "testsCompleted": 3
+        },
+        {
+          "id": "5",
+          "mutatorName": "StringLiteral",
+          "replacement": "\"\"",
+          "location": {
+            "start": {
+              "line": 5,
+              "column": 27
+            },
+            "end": {
+              "line": 5,
+              "column": 30
+            }
+          },
+          "status": "Killed",
+          "static": false,
+          "coveredBy": [
+            "0",
+            "1",
+            "2"
+          ],
+          "testsCompleted": 1,
+          "killedBy": [
+            "2"
+          ]
+        },
+        {
+          "id": "6",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "true",
+          "location": {
+            "start": {
+              "line": 6,
+              "column": 7
+            },
+            "end": {
+              "line": 6,
+              "column": 18
+            }
+          },
+          "status": "Timeout",
+          "static": false,
+          "coveredBy": [
+            "0",
+            "1",
+            "2"
+          ],
+          "testsCompleted": 3
+        },
+        {
+          "id": "7",
+          "mutatorName": "BlockStatement",
+          "replacement": "{}",
+          "location": {
+            "start": {
+              "line": 7,
+              "column": 21
+            },
+            "end": {
+              "line": 7,
+              "column": 9
+            }
+          },
+          "status": "RuntimeError",
+          "static": false,
+          "statusReason": "TypeError: Cannot read properties of undefined"
+        },
+        {
+          "id": "8",
+          "mutatorName": "StringLiteral",
+          "replacement": "\"\"",
+          "location": {
+            "start": {
+              "line": 8,
+              "column": 12
+            },
+            "end": {
+              "line": 8,
+              "column": 15
+            }
+          },
+          "status": "CompileError",
+          "static": false,
+          "statusReason": "error TS2322: Type 'string' is not assignable"
+        },
+        {
+          "id": "9",
+          "mutatorName": "EqualityOperator",
+          "replacement": "a >= b",
+          "location": {
+            "start": {
+              "line": 14,
+              "column": 7
+            },
+            "end": {
+              "line": 14,
+              "column": 12
+            }
+          },
+          "status": "NoCoverage",
+          "static": false
+        },
+        {
+          "id": "10",
+          "mutatorName": "ArithmeticOperator",
+          "replacement": "a + b",
+          "location": {
+            "start": {
+              "line": 15,
+              "column": 12
+            },
+            "end": {
+              "line": 15,
+              "column": 17
+            }
+          },
+          "status": "NoCoverage",
+          "static": false
+        },
+        {
+          "id": "11",
+          "mutatorName": "ArithmeticOperator",
+          "replacement": "b + a",
+          "location": {
+            "start": {
+              "line": 17,
+              "column": 10
+            },
+            "end": {
+              "line": 17,
+              "column": 15
+            }
+          },
+          "status": "Ignored",
+          "static": false,
+          "statusReason": "Ignored by the mutate pattern"
+        },
+        {
+          "id": "12",
+          "mutatorName": "BlockStatement",
+          "replacement": "{}",
+          "location": {
+            "start": {
+              "line": 13,
+              "column": 35
+            },
+            "end": {
+              "line": 13,
+              "column": 2
+            }
+          },
+          "status": "Pending",
+          "static": false
+        }
+      ]
+    },
+    "src/unused.mjs": {
+      "language": "javascript",
+      "source": "export function orphan(x) {\n  return x ? 1 : 2;\n}\n",
+      "mutants": [
+        {
+          "id": "13",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "true",
+          "location": {
+            "start": {
+              "line": 2,
+              "column": 10
+            },
+            "end": {
+              "line": 2,
+              "column": 11
+            }
+          },
+          "status": "Survived",
+          "static": false,
+          "coveredBy": [
+            "0",
+            "1",
+            "2"
+          ],
+          "testsCompleted": 3
+        },
+        {
+          "id": "14",
+          "mutatorName": "ConditionalExpression",
+          "replacement": "false",
+          "location": {
+            "start": {
+              "line": 2,
+              "column": 10
+            },
+            "end": {
+              "line": 2,
+              "column": 11
+            }
+          },
+          "status": "Killed",
+          "static": false,
+          "coveredBy": [
+            "0",
+            "1",
+            "2"
+          ],
+          "testsCompleted": 1,
+          "killedBy": [
+            "2"
+          ]
+        }
+      ]
+    }
+  },
+  "framework": {
+    "name": "StrykerJS",
+    "version": "9.1.0"
+  }
+}

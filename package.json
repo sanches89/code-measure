@@ -1,7 +1,7 @@
 {
   "name": "code-measure",
   "version": "1.0.0",
-  "description": "Measure a codebase in any language before and after a refactoring: duplication, complexity, hotspots, test results, and line and branch coverage, as one JSON summary.",
+  "description": "Measure a codebase in any language before and after a refactoring: duplication, complexity, hotspots, test results, line and branch coverage, and mutation score, as one JSON summary.",
   "keywords": [
     "refactoring",
     "duplication",
@@ -11,7 +11,12 @@
     "junit",
     "lcov",
     "cobertura",
-    "jacoco"
+    "jacoco",
+    "mutation-testing",
+    "stryker",
+    "pitest",
+    "cargo-mutants",
+    "infection"
   ],
   "license": "MIT",
   "author": "Ivan C. Sanches",
