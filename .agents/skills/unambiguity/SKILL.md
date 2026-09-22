@@ -1,6 +1,6 @@
 ---
 name: unambiguity
-description: Use when the user wants a document, spec, README, AGENTS.md, prompt, or any instruction text clarified, disambiguated, or made precise with its meaning kept, or says a text is vague, read two ways, or misread by an agent. Not for writing the glossary.
+description: Rewrites a text so that every sentence has one reading, with its meaning kept. Use when the user wants a document, spec, or prompt clarified, or says it is vague or misread.
 license: MIT
 argument-hint: <file path | text>
 ---

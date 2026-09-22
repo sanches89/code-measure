@@ -1,6 +1,6 @@
 ---
 name: agent-docs
-description: Writes and audits a repository's agent and developer docs — AGENTS.md and CLAUDE.md files, READMEs, ADRs, docs/refs and the glossary — to one set of rules. Use before writing or editing any of them, or when the user asks to audit, shrink, tidy or dedupe them.
+description: Writes and audits a repository's AGENTS.md, CLAUDE.md, READMEs, ADRs, docs/refs, and glossary. Use before editing any of them, or to audit, shrink, or dedupe them.
 license: MIT
 compatibility: The audit script requires Node.js 18 or newer and git, run inside a git repository.
 ---
@@ -42,8 +42,9 @@ Apply these rules to every doc below, plus the doc rules the repo's root
   says. Leave out anything lint, types, tests or a hook reject with a clear
   message. Keep a tree only when it says where new files go.
 - Put the rule that outranks the others first.
-- Write terse imperative bullets. Keep short parallel items inline, separated
-  by commas. Make a list only of ordered steps, or of items that are clauses.
+- Write terse imperative bullets of at most 25 words per sentence. Keep short
+  parallel items inline, separated by commas. Make a list only of ordered
+  steps, or of items that are clauses.
 - Give a short reason inline when it stops a wrong shortcut. Cite an ADR for
   a long one, as in `(ADR 0003)`.
 - Name the exact command for every step. Write "ask the user to" before a
@@ -64,6 +65,8 @@ Apply these rules to every doc below, plus the doc rules the repo's root
   history.
 - When its reason no longer holds, or one of those places now shows it,
   delete the ADR and its citations.
+- Read `references/adr-template.md` before writing or editing an ADR: it
+  holds the file name, the sections, and the steps to amend or retire one.
 
 ## Reference docs
 

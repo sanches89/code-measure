@@ -69,7 +69,8 @@ printed is a failure.
 
 ```bash
 awk '/^```/ { c = !c; next } c || !NF { next }
-     /^#|^ *[-*] |^\|/ { print "." } { print }' <draft-file> \
+     /^#/ { print "."; next }
+     /^ *[-*] |^\|/ { print "." } { print }' <draft-file> \
   | tr '\n' ' ' | sed -E 's/`[^`]*`/X/g' | tr '.!?;:' '\n\n\n\n\n' \
   | awk 'NF > 25'
 ```

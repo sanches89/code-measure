@@ -8,12 +8,13 @@ whole checklist again.
 
 - [ ] Every entry is one bullet `- **Term**: definition.` under a `##`
       section, in alphabetical order inside the section.
-- [ ] The header names the document set.
+- [ ] The header is the template's header, with every `<placeholder>`
+      replaced.
 
 ## Entry test
 
-- [ ] Every term passes the three conditions of the entry test in Step 2d.
-- [ ] Every term has at least one usage in the document set.
+- [ ] Every term passes Gate A or Gate B of the entry test in Step 2d.
+- [ ] Every term has at least one usage in the evidence set.
 
 ## Definitions
 
@@ -37,8 +38,8 @@ whole checklist again.
 
 - [ ] Every disagreeing usage and every fact taken out of a definition is
       in the glossary report with its path and line.
-- [ ] Every removed entry is in the glossary report with the condition it
-      failed or the word `unused`.
+- [ ] Every removed entry is in the glossary report with the gate and
+      condition it failed, or the word `unused`.
 - [ ] The open-decisions list from research is empty.
 
 ## Grep helpers
@@ -83,7 +84,8 @@ is a failure.
 
 ```bash
 awk '/^```/ { c = !c; next } c || !NF { next }
-     /^#|^ *[-*] / { print "." } { print }' <draft-file> \
+     /^#/ { print "."; next }
+     /^ *[-*] / { print "." } { print }' <draft-file> \
   | tr '\n' ' ' | sed -E 's/`[^`]*`/X/g' | tr '.!?;:' '\n\n\n\n\n' \
   | awk 'NF > 25'
 ```
