@@ -25,23 +25,52 @@ The tool changes no file of the measured project and installs nothing into
 it. A measurement whose tool is not found, or whose report is not given, is
 marked `skipped` with a reason. It never fails the run.
 
-## Run
+## Install
 
-Needs Node.js 22.13 or newer. Run it from the root of the project to measure.
+Needs Node.js 22.13 or newer.
 
 ```bash
-# without installing
-npx code-measure src
-
-# or install once
 npm install --global code-measure
-code-measure src
+code-measure --version
+
+# or run it without installing
+npx code-measure src
 ```
 
-Complexity needs lizard. The tool runs `lizard` from `PATH`, else
-`uvx lizard`, else `pipx run lizard`, else `python3 -m lizard`, else
-`python -m lizard`. Install [uv](https://docs.astral.sh/uv/) or pipx to
-enable it.
+Run it from the root of the project to measure. Inside a git checkout it
+measures the files `git ls-files` lists, so the files `.gitignore` names stay
+out. Outside one it walks the paths, skipping folders such as `node_modules`,
+`vendor`, `dist`, `build`, and `target`. Leave generated and vendored code out
+with `--ignore`, so that the numbers track the code the refactoring touches.
+
+The package ships jscpd, so `duplication` needs nothing more. The other
+measurements do:
+
+| Measurement | Needs | Without it |
+|---|---|---|
+| `complexity` | lizard, installed as below | `skipped`. `hotspots` then weighs a file by its lines instead of its complexity, and `coverage` has no per-function coverage or CRAP score. |
+| `hotspots` | git on `PATH`, and a git checkout of the measured project with at least one commit | `skipped` |
+| `tests`, `coverage`, `mutation` | a report the project's own test or mutation command wrote, passed with `--test-report`, `--coverage-report`, or `--mutation-report` | `skipped` |
+
+Install lizard once, in whichever of these ways the machine allows:
+
+```bash
+uv tool install lizard          # with uv: https://docs.astral.sh/uv/
+pipx install lizard             # with pipx: https://pipx.pypa.io/
+python3 -m pip install lizard   # with any Python 3
+```
+
+With uv installed, lizard needs no install of its own: the tool runs
+`uvx lizard`, which fetches lizard on first use. The tool looks for `lizard`
+on `PATH`, else `uvx lizard`, else `pipx run lizard`, else
+`python3 -m lizard`, else `python -m lizard`.
+
+Check the setup from the root of a project. Each tool measurement prints `ok`,
+or the reason it was skipped:
+
+```bash
+code-measure src | jq '{duplication, complexity, hotspots} | map_values(.reason // .status)'
+```
 
 ## Before and after
 
@@ -305,8 +334,10 @@ the function the report names), the mutator, and the change.
 
 ## Development
 
-Needs Node.js 22.13 or newer, and pnpm (`packageManager` in `package.json`
-pins its version).
+Needs Node.js 22.13 or newer, and pnpm. Install pnpm with
+`npm install --global pnpm`, or with `corepack enable` on Node 22 or 24, which
+bundle Corepack. Either way pnpm runs the version that `packageManager` in
+`package.json` pins.
 
 ```bash
 pnpm install

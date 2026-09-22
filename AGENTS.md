@@ -24,7 +24,10 @@ after a refactoring. Plain Node.js ESM (`.mjs`), no build step, pnpm.
 
 ## Checks
 
-- Run `pnpm test` before calling a change done. CI runs it on Node 22 and 24.
+- Run `pnpm install` once, then `pnpm test` before calling a change done. CI
+  runs it on Node 22 and 24.
+- A manual run, `node bin/code-measure.mjs src`, needs lizard for
+  `complexity`. Install it as README "Install" says.
 
 ## Tests
 
