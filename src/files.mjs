@@ -2,8 +2,8 @@ import { existsSync, readdirSync, statSync } from "node:fs";
 import { join, relative, resolve, sep } from "node:path";
 import { run } from "./run.mjs";
 
-// Data and prose formats: duplication, churn, and coverage in them say nothing about code.
-export const NOT_CODE = ["md", "mdx", "txt", "json", "jsonc", "yaml", "yml", "toml", "lock", "svg", "snap", "csv", "tsv", "xml", "html", "map"];
+// Data, prose, style, query, and script formats: duplication, churn, and coverage in them say nothing about the app's code.
+export const NOT_CODE = ["md", "mdx", "txt", "json", "jsonc", "yaml", "yml", "toml", "lock", "svg", "snap", "csv", "tsv", "xml", "html", "map", "css", "sql", "sh"];
 const SKIP_DIRS = new Set([".git", "node_modules", "vendor", "dist", "build", "target", ".venv", "venv", "__pycache__"]);
 
 /** A path relative to the current directory, with forward slashes. */

@@ -27,8 +27,11 @@ test("extension reads the last suffix of the file name, never of a folder", () =
   assert.equal(extension("v1.2/Makefile"), "");
 });
 
-test("isCode leaves out data and prose formats", () => {
+test("isCode leaves out data, prose, style, query, and script formats", () => {
   assert.equal(isCode("src/app.ts"), true);
   assert.equal(isCode("package.json"), false);
   assert.equal(isCode("README.md"), false);
+  assert.equal(isCode("src/app.css"), false);
+  assert.equal(isCode("db/schema.sql"), false);
+  assert.equal(isCode("scripts/build.sh"), false);
 });
