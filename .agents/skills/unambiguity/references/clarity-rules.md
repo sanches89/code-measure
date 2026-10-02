@@ -13,9 +13,9 @@ of the project, recorded in Step 2d, wins over a rule here.
   thing, such as `server` and `tracker`, or one thing written two ways, such
   as `task file`, `task.md`, and `the task's file`. Fix: keep one name
   everywhere, the glossary's term when it has one.
-- **Undefined term.** Find: a word that passes the entry test and has no
+- **Undefined word.** Find: a word that passes the entry test and has no
   glossary entry. Fix: use it the same way everywhere, and put it in the
-  clarity report as a candidate. Never define it in the text.
+  clarity report under *Undefined words*. Never define it in the text.
 - **Referent without a name.** Find: `it`, `this`, `that`, `the service`,
   `the config`, `the relevant tests`, `the usual place`, or a pronoun with
   two possible antecedents. Fix: write the name of the thing.

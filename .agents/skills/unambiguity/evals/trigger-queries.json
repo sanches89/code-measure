@@ -1,0 +1,12 @@
+[
+  {"query": "docs/deploy.md keeps getting misread, two engineers rolled back different things last week. rewrite it so there is only one way to read each step", "should_trigger": true},
+  {"query": "Tighten the wording of this PRD paragraph, same requirements: 'The service should probably retry failed webhooks a few times and alert someone if needed. It must be fast.' No 'should probably' or 'as needed' left, and every 'it' points at something.", "should_trigger": true},
+  {"query": "My system prompt in prompts/support-agent.md is vague and the model keeps guessing what 'escalate' means. Make every sentence precise without changing the intent.", "should_trigger": true},
+  {"query": "the acceptance criteria in tasks/007-export/task.md are fuzzy, 'fast enough' and 'the relevant tests'. fix the wording, do not change what the task is", "should_trigger": true},
+  {"query": "Review CONTRIBUTING.md for sentences that can be read two ways and rewrite those, keeping everything else byte for byte.", "should_trigger": true},
+  {"query": "Write a GLOSSARY.md for this repo defining tenant, account, and workspace.", "should_trigger": false},
+  {"query": "Shorten docs/deploy.md to half its length, cut whatever is not essential.", "should_trigger": false},
+  {"query": "Translate docs/deploy.md into Spanish.", "should_trigger": false},
+  {"query": "Fix the typos and grammar in README.md.", "should_trigger": false},
+  {"query": "Summarize what docs/deploy.md says about rollbacks in three bullets.", "should_trigger": false}
+]

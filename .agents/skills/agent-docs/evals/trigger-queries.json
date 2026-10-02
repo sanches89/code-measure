@@ -1,0 +1,12 @@
+[
+  {"query": "our AGENTS.md has grown to 400 lines and half of it repeats what eslint already enforces. can you tidy it up without losing any real rule?", "should_trigger": true},
+  {"query": "Add a line to CLAUDE.md telling the agent that new React components go under apps/web/src/components and use the existing Button primitives.", "should_trigger": true},
+  {"query": "We decided to move all background jobs into packages/queue. Where do I document the reasoning so future contributors do not undo it? Write it up.", "should_trigger": true},
+  {"query": "the README in packages/api still describes the old express setup, we moved to fastify last month. update it", "should_trigger": true},
+  {"query": "I copied the Stripe webhook docs into docs/refs/stripe/. Trim it to the parts our code uses and make sure it has the footer format we use.", "should_trigger": true},
+  {"query": "Write a GLOSSARY.md for this repo, the docs use 'context' for two different things.", "should_trigger": false},
+  {"query": "This paragraph in docs/onboarding.md is vague and people read it two ways. Rewrite it so it has one meaning.", "should_trigger": false},
+  {"query": "Write API docs for every endpoint in src/routes/ with request and response examples.", "should_trigger": false},
+  {"query": "Add a JSDoc comment explaining what parseRange in lib/parser.js does.", "should_trigger": false},
+  {"query": "Generate a CHANGELOG.md from the git history since v1.4.0.", "should_trigger": false}
+]

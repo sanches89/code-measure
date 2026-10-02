@@ -1,6 +1,6 @@
 ---
 name: unambiguity
-description: Rewrites a text so that every sentence has one reading, with its meaning kept. Use when the user wants a document, spec, or prompt clarified, or says it is vague or misread.
+description: Rewrites a text so that every sentence has one reading, with its meaning kept, and reports each ambiguity resolved. Use when the user wants a document, spec, prompt, rule, or instruction clarified, tightened, or made precise, or says it is vague, misread, confusing, or open to interpretation.
 license: MIT
 argument-hint: <file path | text>
 ---
@@ -12,31 +12,51 @@ exactly one reading. Keep the meaning. Write only the file the text came
 from. When the `glossary` skill is available, use it to define the terms the
 text needs before the rewrite.
 
-An ambiguity is a passage of the input text with more than one reading, or
-one that breaks a rule in `references/clarity-rules.md`. A term is a word or
-phrase with an entry in the project's glossary, `GLOSSARY.md` at the
-repository root unless the user names another path. A candidate is a word
-that passes the entry test and has no glossary entry: at one usage at least,
-a reader can take it in two ways that lead to different actions; no word or
-phrase with one reading fits every usage; and the sentence around that usage
-does not settle the reading.
+The glossary is `GLOSSARY.md` at the repository root, unless the user names
+another path. A word passes the entry test when all three hold: at one usage
+at least, a reader can take it in two ways that lead to different actions;
+no word or phrase with one reading fits every usage; and the sentence around
+that usage does not settle the reading.
+
+## Terms
+
+These words have exactly one meaning in this skill.
+
+- **Ambiguity**: a passage of the input text with more than one reading, or
+  one that breaks a clarity rule.
+- **Term**: a word or phrase with an entry in the project's glossary.
+- **Undefined word**: a word that passes the entry test and has no glossary
+  entry.
 
 ## Hard rules
 
 1. **The meaning stays.** Never add, drop, or change a fact or an
-   instruction.
+   instruction. A rewrite that changes meaning is an edit no one approved.
 2. **Read-only on the project.** Write only the input file, in Step 7. Write
-   drafts in a scratch directory outside the repository
-   (in Claude Code, the scratchpad directory).
+   drafts in a scratch directory outside the repository (in Claude Code,
+   the scratchpad directory). A draft inside the repository reads as the
+   text that holds.
 3. **Never ask what research can answer.** Consult the input text, the
-   glossary, the code, and the docs the text names first.
+   glossary, the code, and the docs the text names first. The code settles
+   a referent better than a guess.
 4. **Never assume.** When a reading changes the rewrite and research cannot
-   settle it, ask the user.
-5. **Write nothing before the user approves the full rewrite** (Step 6).
+   settle it, ask the user. An assumed reading writes the author's intent
+   for them.
+5. **Write nothing outside the scratch directory before the user approves
+   the full rewrite** (Step 6). The author owns the text until then.
 
 ## Workflow
 
 ### Step 1: Load the input text
+
+**Subagents.** When the agent offers subagents, run in one every read whose
+whole product is the facts the step records. In Claude Code, that is the
+`Agent` tool, with the `Explore` subagent for reads. Run in one every
+command whose output the step reduces to a result. Give the subagent the
+question, the paths, and the facts to return. It returns only those facts,
+each with path and line. The context window then holds those returns, not
+the files, and stays small. Without subagents, follow the step yourself and
+keep only what it names.
 
 Resolve the invocation text, or the text in the conversation, as one of:
 - **`from <skill name>: <file path>`**: that skill invoked this run. The
@@ -54,27 +74,28 @@ the input text does not wrap.
 ### Step 2: Research
 
 **2a. The input text.** Read `references/clarity-rules.md` now. Then read
-the input text in full. Record every ambiguity with its location, its kind,
-and its readings.
+the input text in full, yourself: Step 4 rewrites it. Record every
+ambiguity with its location, its kind, and its readings.
 
 **2b. The glossary.** Read the glossary, when it exists, and every
 `## Terms`, `## Definitions`, or `## Glossary` section of the input text.
 Record every term the input text uses with its definition. Run the entry
 test on every word whose sense in the text differs from its common sense.
-Record every candidate with the readings a reader can take.
+Record every undefined word with the readings a reader can take.
 
-Then define the candidates with the `glossary` skill when all of these hold:
-- there is at least one candidate;
+Then define the undefined words with the `glossary` skill when all of these
+hold:
+- there is at least one undefined word;
 - the input text is a file inside a git repository;
 - a skill named `glossary` is available to the agent;
 - no other skill invoked this run.
 Invoke it the way the agent invokes a skill (in Claude Code, the `Skill`
 tool). Pass the invocation text
 `from unambiguity: glossary <glossary path>, files <input file path>, words
-<the candidates>`. Wait for it to finish: it asks its own questions and
+<the undefined words>`. Wait for it to finish: it asks its own questions and
 writes the glossary after its own approval. Then read the glossary again and
-record each candidate it defined as a term. When a condition fails, keep the
-candidates for the clarity report.
+record each undefined word it defined as a term. When a condition fails,
+keep the undefined words for the clarity report.
 
 **2c. Referents.** For every referent without a name, search the input text,
 the code, and the docs the text names for the thing it points at. Record the
@@ -148,6 +169,6 @@ clarity report:
 - *Resolved*: one bullet per ambiguity, at most 2 lines: its kind, the
   passage before and after, and what settled it: the path and line,
   identifier, or URL, or the user's answer.
-- *Candidates*: every candidate, with its readings and the reading the
-  rewrite uses, or `None.` when the `glossary` skill defined them all.
+- *Undefined words*: every undefined word, with its readings and the reading
+  the rewrite uses, or `None.` when the `glossary` skill defined them all.
 Ask nothing else.

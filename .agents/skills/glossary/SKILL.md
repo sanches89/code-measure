@@ -1,6 +1,6 @@
 ---
 name: glossary
-description: Writes or audits a project's GLOSSARY.md. Use when the user wants a glossary, or says the documents use one word for two things or leave a term undefined.
+description: Writes or audits a project's GLOSSARY.md from the words its own documents use with two readings or in a project-only sense, never a glossary of general terms. Use when the user wants the project's terms defined or settled, says the docs use one word for two things or a term nobody defined, or asks what a word means in this project.
 license: MIT
 argument-hint: <glossary path | files to read | words to define>
 ---
@@ -15,11 +15,19 @@ the glossary, and rewrite them with the `unambiguity` skill when it is
 available.
 
 The glossary is `GLOSSARY.md` at the repository root, unless the user names
-another path. The evidence set is the files research reads for usages. A
-term is a word or phrase with a glossary entry. A candidate is a word
-research found that has no entry yet. A usage is one occurrence of a word in
-the evidence set, as path and line. A restatement is a glossary entry copied
-into another document, such as a `## Terms` section.
+another path.
+
+## Terms
+
+These words have exactly one meaning in this skill.
+
+- **Candidate**: a word research found in the evidence set that has no
+  glossary entry yet.
+- **Evidence set**: the files research reads for usages.
+- **Restatement**: a glossary entry copied into another document, such as a
+  `## Terms` section.
+- **Term**: a word or phrase with an entry in the project's glossary.
+- **Usage**: one occurrence of a word in the evidence set, as path and line.
 
 ## Hard rules
 
@@ -27,18 +35,21 @@ into another document, such as a `## Terms` section.
    Step 7. The one exception is the reference line of Step 4, which Step 7
    adds to the project's agent instructions. Write drafts in a scratch
    directory outside the repository (in Claude Code, the scratchpad
-   directory).
+   directory). A definition binds every document, so it lands in one place.
 2. **Never ask what research can answer.** Consult the evidence set, the
-   code, and the existing glossary first.
+   code, and the existing glossary first. The code settles what a word
+   means better than a recollection.
 3. **Never assume.** When a definition changes the glossary and research
-   cannot settle it, ask the user.
+   cannot settle it, ask the user. An assumed meaning misleads every reader
+   of the glossary.
 4. **Never edit another document yourself.** A usage that disagrees with
    the glossary goes in the glossary report. Only the `unambiguity` skill
    rewrites a document, when Step 7 invokes it. The reference line of Step 4
    is the one exception: Step 7 adds that line and changes nothing else in
-   that file.
-5. **Write nothing before the user approves the full glossary text and that
-   reference line** (Step 6).
+   that file. A rewrite without that skill's checks changes meaning.
+5. **Write nothing outside the scratch directory before the user approves
+   the full glossary text and that reference line** (Step 6). An
+   unapproved entry binds every document from the moment it is saved.
 
 ## Workflow
 
@@ -62,14 +73,22 @@ before any research.
 
 ### Step 2: Research
 
+**Subagents.** When the agent offers subagents, run in one every read whose
+whole product is the facts the step records. In Claude Code, that is the
+`Agent` tool, with the `Explore` subagent for reads. Run in one every
+command whose output the step reduces to a result. Give the subagent the
+question, the paths, and the facts to return. It returns only those facts,
+each with path and line. The context window then holds those returns, not
+the files, and stays small. Without subagents, follow the step yourself and
+keep only what it names.
+
 **2a. Existing glossary.** When the glossary exists, read it in full. Record
 every term, its definition, and its section. When it does not exist, record
 that. Record whether the repository root has an `AGENTS.md` or a
 `CLAUDE.md`, and whether that file names the glossary.
 
-**2b. Evidence set.** Read every document in full. Use a read-only subagent
-for broad sweeps when the agent offers one (in Claude Code, the `Explore`
-subagent). Record, with path and line:
+**2b. Evidence set.** Read every document in full. Record, with path and
+line:
 - every candidate:
   - a word whose usages point at two things;
   - a word the project uses in a sense that its ordinary sense and its
@@ -90,15 +109,16 @@ never a rewrite. A rewritten quotation stops being a quotation.
 identifier that carries the word and what the code does with it, so that
 the definition matches the code, not the prose.
 
-**2d. Findings.** Run the entry test on every candidate and every existing
-entry. A word gets an entry when Gate A holds or Gate B holds.
+**2d. Findings.** Run the entry test, Gate A, and the sense test, Gate B, on
+every candidate and every existing entry. A word gets an entry when one
+gate holds.
 
-Gate A, a conflict. All three hold:
+Gate A, the entry test for a conflict. All three hold:
 - the word points at two things;
 - no word or phrase with one reading fits every usage;
 - the sentence around at least one usage does not settle the reading.
 
-Gate B, an opaque sense. All three hold:
+Gate B, the sense test for an opaque sense. All three hold:
 - the project gives the word a meaning that its ordinary sense and its
   common sense in the project's field do not give;
 - no document defines that meaning where the word is used;
@@ -156,7 +176,7 @@ Continue until no open decision remains.
 ### Step 4: Write the glossary
 
 Read `references/glossary-template.md` now and fill it, in the scratch
-directory, with the terms that pass the entry test. Writing rules:
+directory, with the words that pass a gate. Writing rules:
 - Start a definition with a noun phrase that names the kind of thing:
   `a user assigned the patient role in the app`, never `handles patients`.
 - Say what the term is, never how it works, never with its own term, and
@@ -185,7 +205,7 @@ in the root file. Write no line when that file already names `GLOSSARY.md`,
 and write none when the root has no `AGENTS.md` and no `CLAUDE.md`. Name
 either case in the glossary report.
 
-When no term passes the entry test, write no draft and no reference line. Go
+When no word passes a gate, write no draft and no reference line. Go
 to Step 6 with the glossary report alone and ask whether the user confirms
 an empty glossary. On confirmation, Step 7 deletes an existing glossary and
 writes no new one.

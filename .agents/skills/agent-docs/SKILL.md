@@ -1,6 +1,6 @@
 ---
 name: agent-docs
-description: Writes and audits a repository's AGENTS.md, CLAUDE.md, READMEs, ADRs, docs/refs, and glossary. Use before editing any of them, or to audit, shrink, or dedupe them.
+description: Writes and audits a repository's AGENTS.md, CLAUDE.md, READMEs, ADRs, docs/refs, and glossary. Use before editing any of them, when adding a convention or a decision record, or when the user wants the agent docs audited, shrunk, deduped, tidied, or checked for stale rules.
 license: MIT
 compatibility: The audit script requires Node.js 18 or newer and git, run inside a git repository.
 ---
@@ -17,7 +17,8 @@ Apply these rules to every doc below, plus the doc rules the repo's root
 - `README.md`: a short runbook for people, at the root and in every app and
   package. It covers setup, how to run, test and ship, and the context a new
   developer needs first. Leave out how things work: the code shows it.
-- `GLOSSARY.md`: one meaning for each word the docs use two ways.
+- `GLOSSARY.md`: one meaning for each word the docs use two ways or in a
+  sense the word alone does not give.
 - `docs/adrs/`: the reasons behind architecture decisions.
 - `docs/refs/`: excerpts of outside docs.
 - A code comment: a reason tied to one file.
@@ -87,7 +88,9 @@ Apply these rules to every doc below, plus the doc rules the repo's root
 - Use each word with the meaning `GLOSSARY.md` gives it.
 - When a change gives a word a second meaning and no other word fits, add an
   entry: one terse bullet with the meaning that holds. When the agent has a
-  skill named `glossary`, invoke it for the entry instead.
+  skill named `glossary`, invoke it instead with the invocation text
+  `from agent-docs: glossary GLOSSARY.md, files <the edited doc>, words
+  <the word>`.
 
 ## After editing
 
@@ -100,6 +103,15 @@ node <skill-dir>/scripts/audit.mjs
 ```
 
 ## Audit
+
+**Subagents.** When the agent offers subagents, run in one every read whose
+whole product is the facts the step records. In Claude Code, that is the
+`Agent` tool, with the `Explore` subagent for reads. Run in one every
+command whose output the step reduces to a result. Give the subagent the
+question, the paths, and the facts to return. It returns only those facts,
+each with path and line. The context window then holds those returns, not
+the files, and stays small. Without subagents, follow the step yourself and
+keep only what it names.
 
 When the user asks to audit, shrink, tidy or dedupe the docs, follow
 `references/audit.md`.

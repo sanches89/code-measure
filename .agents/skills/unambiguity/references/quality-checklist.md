@@ -39,8 +39,8 @@ the whole checklist again.
 
 ## Report
 
-- [ ] Every ambiguity is under *Resolved* with its decision, every candidate
-      under *Candidates*, and the open-decisions list is empty.
+- [ ] Every ambiguity is under *Resolved* with its decision, every undefined
+      word under *Undefined words*, and the open-decisions list is empty.
 
 ## Grep helpers
 
@@ -52,7 +52,7 @@ grep -nEi \
   -e '\?|\bTBD\b|\bTBC\b|\bTODO\b|\bmaybe\b|\bmight\b|\bprobably\b' \
   -e '\bpossibly\b|\bperhaps\b|\bideally\b|\bconsider\b|\bcould\b' \
   -e 'should we|if needed|if necessary|as appropriate|as needed' \
-  -e '\betc\b|and so on|or similar|something like|either .* or|one of the' \
+  -e '\betc\b|and so on|or similar|something like|either .* or|one of the\b' \
   <draft-file>
 ```
 

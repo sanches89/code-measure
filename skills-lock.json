@@ -5,19 +5,19 @@
       "source": "sanches89/ai-skills",
       "sourceType": "github",
       "skillPath": "skills/agent-docs/SKILL.md",
-      "computedHash": "ef60cd4cdc712248f97f519a3d17e751d1af13ce507ff9e35eef6c8f0ba8364f"
+      "computedHash": "5a1a6f4d95d658b921710fa458721998e2dbdf43cef39d6063d085d28554c23d"
     },
     "glossary": {
       "source": "sanches89/ai-skills",
       "sourceType": "github",
       "skillPath": "skills/glossary/SKILL.md",
-      "computedHash": "13d2f21287047d94fec18757c728bc1f9d25e400496d650fded7aeb62d5f8597"
+      "computedHash": "1e9bc09b44833ac23a92d6aa027040973cf51a4fa6e8af3508a802fdeb5d0025"
     },
     "unambiguity": {
       "source": "sanches89/ai-skills",
       "sourceType": "github",
       "skillPath": "skills/unambiguity/SKILL.md",
-      "computedHash": "ed7a128ec19c57efd40bda41f1bd2880faa8d705d6eb699ee81198e7df70fd03"
+      "computedHash": "876a088bfa694fa599086cd82e5c78dfe7c4219e605b119dd0a0b1904a51656c"
     }
   }
 }

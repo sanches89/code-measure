@@ -1,5 +1,8 @@
 # Agent docs audit
 
+Sections: 1. Measure; 2. AGENTS.md; 3. docs/refs; 4. Words and sentences; 5.
+Verify and report.
+
 Hold every `AGENTS.md` and reference doc to the rules in `SKILL.md` and to
 the doc rules the repo's root `AGENTS.md` adds. Add no rule here: a finding
 that needs a new rule becomes an edit to the root `AGENTS.md`.
@@ -66,7 +69,8 @@ For each folder changed since `<ref>`, or all of them when asked:
 
 - Find what the repo uses: read the `AGENTS.md` line that indexes the folder,
   then `git grep` the code it serves for the APIs, options and flags each
-  section covers.
+  section covers. Run the `git grep` sweep in a subagent, as the Subagents
+  block of `SKILL.md` says.
 - Cut sections and reference docs the repo does not use. Keep a section
   documenting an alternative the repo rejected only when the README says so,
   cut to what that choice needs.
