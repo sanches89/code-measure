@@ -1,23 +1,65 @@
 {
   "version": 1,
   "skills": {
-    "agent-docs": {
+    "analyzing-code": {
       "source": "sanches89/ai-skills",
       "sourceType": "github",
-      "skillPath": "skills/agent-docs/SKILL.md",
-      "computedHash": "5a1a6f4d95d658b921710fa458721998e2dbdf43cef39d6063d085d28554c23d"
+      "skillPath": "skills/analyzing-code/SKILL.md",
+      "computedHash": "8534d472f68ba5f6770aa911d506e791e3934dab5246c321f1cdf3ab6caada0c"
     },
-    "glossary": {
+    "breaking-down-tasks": {
       "source": "sanches89/ai-skills",
       "sourceType": "github",
-      "skillPath": "skills/glossary/SKILL.md",
-      "computedHash": "1e9bc09b44833ac23a92d6aa027040973cf51a4fa6e8af3508a802fdeb5d0025"
+      "skillPath": "skills/breaking-down-tasks/SKILL.md",
+      "computedHash": "0b759f942d4194d295f517af5537edbbe0258ad7660b08208492b4c95a31389c"
     },
-    "unambiguity": {
+    "creating-tasks": {
       "source": "sanches89/ai-skills",
       "sourceType": "github",
-      "skillPath": "skills/unambiguity/SKILL.md",
-      "computedHash": "876a088bfa694fa599086cd82e5c78dfe7c4219e605b119dd0a0b1904a51656c"
+      "skillPath": "skills/creating-tasks/SKILL.md",
+      "computedHash": "2885c3ee49c4a5de785252a5ae92af336663dea685948d0f8d713af2399da9b0"
+    },
+    "disambiguating-text": {
+      "source": "sanches89/ai-skills",
+      "sourceType": "github",
+      "skillPath": "skills/disambiguating-text/SKILL.md",
+      "computedHash": "23c40188786c349264a1d39bce047cbdd58c842581d3bd20116b34f686c835d8"
+    },
+    "implementing-tasks": {
+      "source": "sanches89/ai-skills",
+      "sourceType": "github",
+      "skillPath": "skills/implementing-tasks/SKILL.md",
+      "computedHash": "f754105508a16c5b71b042852b0f814005240c9338fa393b199daa96a4fd5a03"
+    },
+    "orchestrating-tasks": {
+      "source": "sanches89/ai-skills",
+      "sourceType": "github",
+      "skillPath": "skills/orchestrating-tasks/SKILL.md",
+      "computedHash": "b09f5fe7af36a8940e8142992379d002b87c96468c0daa749f25630e8fe874cc"
+    },
+    "refactoring-code": {
+      "source": "sanches89/ai-skills",
+      "sourceType": "github",
+      "skillPath": "skills/refactoring-code/SKILL.md",
+      "computedHash": "47440967e8da0eba19ba6dab292c94190a3893dcba297d08f95bdfe968174fed"
+    },
+    "updating-packages": {
+      "source": "sanches89/ai-skills",
+      "sourceType": "github",
+      "skillPath": "skills/updating-packages/SKILL.md",
+      "computedHash": "491e9b5c9c0eebbcd8af87ead8a1a56998b0a64419f149bc1b3018cde994ed49"
+    },
+    "writing-agent-docs": {
+      "source": "sanches89/ai-skills",
+      "sourceType": "github",
+      "skillPath": "skills/writing-agent-docs/SKILL.md",
+      "computedHash": "35e294a8a0eb80b4f11b56c69daf3bb9b444c0539d895700237e4ea5fd2c4f5f"
+    },
+    "writing-glossaries": {
+      "source": "sanches89/ai-skills",
+      "sourceType": "github",
+      "skillPath": "skills/writing-glossaries/SKILL.md",
+      "computedHash": "3f50d3d881db929b63a9703807811ea8a4fe65a24a3fd82f3a928c5a3b81e072"
     }
   }
 }

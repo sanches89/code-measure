@@ -1,0 +1,23 @@
+{
+  "skill_name": "analyzing-code",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Run analyzing-code on the working tree.",
+      "expected_output": "Tells the user the run can take hours because the mutation run executes the tests once per mutant. Records git status --porcelain and the short HEAD hash, then builds the ignore globs, the limits from the project's lint configuration or the defaults 10, 50, and 4, the test command with JUnit and coverage report options writing into <scratch-dir>/reports, and the mutation command. Adds no dependency, report, or configuration file to the repository. Runs code-measure from the repository root with '.' as the path, --top 200, the ignore globs, the limits, and one option per report, saving summary.json in the scratch directory. Reads the code behind every entry analysis-rules.md names; a number alone is never a finding. The final message is the measurement report with headings Result, Scope, Code, Limits, Tools, Measurements, Findings, Skipped, at most 60 non-blank lines and at most 12 findings, each with kind, path:line, symbol, evidence, and an action from the fixed list.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Measure the release/2.3 branch. This project has no mutation testing set up.",
+      "expected_output": "Confirms release/2.3 resolves with git rev-parse --verify --quiet 'release/2.3^{commit}', records its short hash, and adds a detached worktree under the scratch directory instead of checking out, stashing, or switching the working tree. Runs the frozen install and the test command there. Records the mutation measurement as skipped with the reason 'no mutation command' and lists it under Skipped in the report. After the report is filled, removes the worktree with --force, prunes, and confirms git worktree list names no folder under the scratch directory.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Analyze src/payments and src/billing.",
+      "expected_output": "The request is neither nothing nor one branch, tag, or commit name, so the skill asks one question: which one name to measure, or none for the working tree. It runs no measurement before the answer.",
+      "files": []
+    }
+  ]
+}

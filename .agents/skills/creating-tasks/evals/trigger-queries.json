@@ -1,0 +1,12 @@
+[
+  {"query": "we keep losing webhook events when stripe returns a 503, i want to plan the retry work in src/payments/webhooks.ts properly before anyone starts coding. can you scope it out as a ticket?", "should_trigger": true},
+  {"query": "Turn this idea into a task: replace the hand-rolled dotenv loading in packages/api/src/config.ts with a zod schema so bad env vars fail at boot.", "should_trigger": true},
+  {"query": "There's a bug where the CSV export in reports/export.py drops the last row when the file has a trailing newline. Write it up so a contractor can pick it up without asking me anything.", "should_trigger": true},
+  {"query": "I have a vague feature request from product about 'smarter search'. Help me figure out what it actually means in our codebase and write a spec we can hand off.", "should_trigger": true},
+  {"query": "create an issue in linear for adding rate limiting to the /login endpoint, include the acceptance criteria and which files change", "should_trigger": true},
+  {"query": "Here's the task file tasks/007-add-retry-to-webhooks/task.md. Implement it and run the tests.", "should_trigger": false},
+  {"query": "tasks/012-typed-config/task.md is way too big for one PR. Split it into smaller pieces I can review one at a time.", "should_trigger": false},
+  {"query": "Run every subtask under tasks/009-search-index/ one after another with a commit each and tell me when it is done.", "should_trigger": false},
+  {"query": "src/payments/service.ts is a mess, three copies of the same retry loop. Clean it up.", "should_trigger": false},
+  {"query": "Quick question: what does the retry policy in src/payments/retry-policy.ts do on the fifth attempt?", "should_trigger": false}
+]

@@ -1,0 +1,23 @@
+{
+  "skill_name": "implementing-tasks",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Implement tasks/004-add-retry-to-webhooks/002-add-retry-policy.md.",
+      "expected_output": "Reads the subtask, then task.md as its parent, and records the parent's Decisions, Out of scope, and the sibling subtasks' Goals in scratch notes. Confirms the dependency on subtask 001 is done by running its Verification command. Builds a criteria checklist with one entry per acceptance criterion word for word. Writes each new test before the code, confirms it fails for the expected reason, then makes it pass. Changes only the files the Changes section names plus their tests. Runs the Verification command, every proof, each new test file alone, then the build, lint, and test commands, and reruns after any fix. Never edits the subtask file or task.md, never commits. The final message is the work report with headings Result, Target, Criteria, Verification, Tests, Commits, Changes, Deviations, Affects other work, at most 30 non-blank lines, with no Blocked by section when the result is done.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Pick up tasks/009-cli-flags/task.md. Note: this repo has no test framework installed.",
+      "expected_output": "Finds no test command and no test file, records that there is no test setup, writes no test, and installs no test framework. Implements the Approach section, proves each criterion with a manual step the agent performs itself, and lists the missing test setup under Affects other work in the work report. Tests line reads 'none: no test setup'.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Work on tasks/011-audit-log/003-emit-events.md. Its Context says events go to src/events/bus.ts (publish) but that file was deleted last week.",
+      "expected_output": "Searches for where the publish symbol moved. With exactly one match, uses it and records a deviation. With zero or several matches, makes no further change and returns the work report with Result blocked, the missing path and symbol under Blocked by, and the change so far left in the working tree. It never asks the user a question and never edits the subtask file.",
+      "files": []
+    }
+  ]
+}

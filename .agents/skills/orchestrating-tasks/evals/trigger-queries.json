@@ -1,0 +1,12 @@
+[
+  {"query": "run the whole of tasks/004-add-retry-to-webhooks/ for me: every subtask in order, one commit each, on its own branch, and don't ask me anything until it's done", "should_trigger": true},
+  {"query": "PAY-212 has six child issues in linear. Work through all of them end to end and mark them done as you go.", "should_trigger": true},
+  {"query": "Take tasks/006-typed-config/task.md all the way to a finished branch, including a refactor pass over what you wrote.", "should_trigger": true},
+  {"query": "issue #140 and its sub-issues are ready. execute them one by one, commit per sub-issue, then give me a summary of what landed", "should_trigger": true},
+  {"query": "Autopilot tasks/003-search-index/task.md while I am in meetings. Keep the plan and the reports next to the task.", "should_trigger": true},
+  {"query": "Implement tasks/004-add-retry-to-webhooks/002-add-retry-policy.md in my working tree, no commit.", "should_trigger": false},
+  {"query": "tasks/006-typed-config/task.md needs to be split into subtasks before anyone runs it.", "should_trigger": false},
+  {"query": "Write a task for adding rate limiting to /login, we have not scoped it yet.", "should_trigger": false},
+  {"query": "Review the code on branch feature/search-index and write a refactor plan, do not touch the code.", "should_trigger": false},
+  {"query": "what is the status of the subtasks in tasks/004-add-retry-to-webhooks? just tell me which are done", "should_trigger": false}
+]

@@ -1,0 +1,23 @@
+{
+  "skill_name": "creating-tasks",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I want to add retries to the webhook sender in src/payments/webhooks.ts so a transient 503 from the upstream does not drop the event. Write this up as a task before anyone touches code.",
+      "expected_output": "Restates the idea as one sentence in the form 'The idea is to <change> so that <outcome>.' and waits for confirmation before research. Reads src/payments/webhooks.ts and the test conventions, then interviews only on decisions research left open, each with 2 to 4 concrete options that name paths and symbols. Shows In scope and Out of scope lists, then the complete task text, and writes nothing until the user approves. Saves <tasks-dir>/###-<task-slug>/task.md with exactly the template sections: Summary, Success criteria, Scope, Approach, Decisions, Context, References, Subtasks holding 'None.', Verification. No file outside the task file changes. The last message is one line: the task file path.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Create a task for migrating our config loader from dotenv to a typed schema. The repo has no tasks folder and there is no issue tracker set up here.",
+      "expected_output": "Finds no tracker and no <tasks-dir> in the repository, and never asks which destination to use or asks the user to connect a tracker. Writes the approved task to <scratch-dir>/tasks/001-<task-slug>/task.md outside the repository. The final line is the absolute path of that file.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Use creating-tasks.",
+      "expected_output": "No idea is given in the invocation or the conversation, so the skill asks for the idea first. It does no research and writes no file before an idea is stated and confirmed.",
+      "files": []
+    }
+  ]
+}

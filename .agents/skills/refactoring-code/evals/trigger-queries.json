@@ -1,0 +1,12 @@
+[
+  {"query": "src/payments/service.ts is a mess, there are three copies of the same retry loop and a 200 line function. tidy it up but i want to review the plan first", "should_trigger": true},
+  {"query": "Review everything on main..HEAD for cleanup before I open the PR. Do not change the code, write up what should change and how to verify each step.", "should_trigger": true},
+  {"query": "Claude wrote most of src/orders last week. Go through it for AI slop: swallowed errors, duplicate helpers, mocks everywhere, 800-line files. Write up the fixes.", "should_trigger": true},
+  {"query": "OrderService news up its own HttpClient and reads process.env inside the business rules. Make it testable without changing what callers see.", "should_trigger": true},
+  {"query": "Improve the whole codebase in batches, worst hotspots first, as one task I can hand to orchestrating-tasks and repeat.", "should_trigger": true},
+  {"query": "Measure the duplication, complexity, coverage and mutation score of this repo and give me the numbers. No refactor plan needed.", "should_trigger": false},
+  {"query": "Implement the refactor subtask tasks/015-refactor-payments/002-extract-is-business-day.md.", "should_trigger": false},
+  {"query": "Write an AGENTS.md for this repo so agents stop reinventing helpers and know which test command to run.", "should_trigger": false},
+  {"query": "rewrite the payments module from scratch in a cleaner style, we can throw the old one away", "should_trigger": false},
+  {"query": "Fix the bug in src/payments/service.ts where the retry loop runs one time too many.", "should_trigger": false}
+]

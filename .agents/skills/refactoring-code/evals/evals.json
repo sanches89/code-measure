@@ -1,0 +1,23 @@
+{
+  "skill_name": "refactoring-code",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Review src/payments/ for refactoring. The tests are in tests/payments/ and run with npm test.",
+      "expected_output": "Sets the refactor scope to every file under src/payments/ and keeps test files in scope for the Tests entries of the catalog alone, and lists the contract: every symbol imported from outside the scope, endpoints, flags, and config keys. Records a baseline in the scratch directory: the code-measure summary run from the project root with --test-report and --coverage-report, and the scan script's JSON, and never writes a report into the repository. Reads every file in scope against references/smell-catalog.md; a number or a scan signal alone is never a finding. Writes one task with at most 12 subtasks, one per refactoring, ordered Remove Dead Code, Rename, in-function, then cross-module, each with one verification command that fails on the current code. A masked error, a placeholder, a skipped test, or a credential goes under Out of scope by location, never as a subtask. Changes no project code and asks no question. Saves <tasks-dir>/###-refactor-<slug>/task.md and ###-<subtask-slug>.md files. The last message is one line: the task file path.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Refactor scope: lib/legacy/parser.js. This repo has no test command and no test files at all.",
+      "expected_output": "Records that there is no test setup. Keeps only entries from the safe set: Rename, Extract Variable, Inline Variable, Extract Function, Move Function, Remove Dead Code, and Parameterize Function or Parameterize Constructor with a default equal to the current collaborator, each marked 'tests: none: safe set' with a structural check as its sole verification command. Every other finding, the Design entries included, goes under the task's Out of scope with the reason 'no test setup'. No subtask names a test or a test framework.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Refactor the whole repository. Most of src/ was written by a coding agent over the last month. Worst spots first; I will run the task with orchestrating-tasks and come back for the rest.",
+      "expected_output": "Takes the repository root as the refactor scope, minus generated and vendored code, lockfiles, build output, snapshots, and migrations that ran. Records the baseline with the measure tool and the scan script over the root. Ranks findings by hotspot score of the file, then low risk before medium before high. Turns findings into entries in rank order with their seam, characterization tests, and contract-change steps, stops at 12 entries, and lists every finding past the cut under Out of scope as 'next batch' with location and smell. A hidden dependency gets a seam subtask with a default equal to the current collaborator, then characterization tests, then the design change. Reinvented functions route callers to the existing function. Masked errors, placeholders, skipped tests, and credentials appear under Out of scope by location, with no credential value anywhere in the task. Ends with one line: the task file path or item identifier.",
+      "files": []
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "skill_name": "updating-packages",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Run updating-packages on this pnpm monorepo, level latest, default cooldown.",
+      "expected_output": "Lists every package.json with git ls-files, assigns each to an install root, records the package manager from the packageManager field or the lockfile, the Node version from the first source that exists, the check commands sorted by baseline duration, and the pins from Renovate and Dependabot files. Records a baseline before any change and copies the manifests and lockfile to <scratch-dir>/baseline. Runs npx --yes npm-check-updates@23 with --workspaces --root, --cooldown 7, --no-deprecated, --peer, --jsonUpgraded, then a second run with --target minor. Shows the plan entries, held packages, and Left alone list, and asks one question with three options: approve all, approve some by number, or change. Sets every range with scripts/set-range.mjs, never by hand, and never edits source code or writes an .ncurc file. Bisects a failing batch and walks the ladder for a breaking major group. Verifies with the frozen install, every check command, the peer report, and a diff review. The final message is the update report with headings Result, Request, Install roots, Packages, Checks, Node version, Commits, Updated, Constrained, Needs migration, Deprecated, Left alone, Unverified, at most 60 non-blank lines, every hold reason a phrase from update-rules.md.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Update only eslint and typescript in packages/api, minor level.",
+      "expected_output": "Paths limit the manifests to packages/api, package names limit the run to eslint and typescript with --filter, and level minor makes the run never bump a major. Every other dependency keeps its range and is not listed as updated. The @types/node candidate is still checked against the Node major. The report's Request line names the paths, both packages, level minor, and the cooldown.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Bump everything and commit each update. There are uncommitted edits in package.json from my last session.",
+      "expected_output": "Because commits are requested and a manifest has uncommitted changes, asks one question before the baseline: commit or stash them first. After the answer, makes one commit per accepted plan entry in the project's commit convention, never pushes and never opens a pull request. The report's Commits line lists the short hashes in order.",
+      "files": []
+    }
+  ]
+}

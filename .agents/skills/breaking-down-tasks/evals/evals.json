@@ -1,0 +1,23 @@
+{
+  "skill_name": "breaking-down-tasks",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Break down tasks/004-add-retry-to-webhooks/task.md into subtasks. The task is approved, do not reopen its decisions.",
+      "expected_output": "Reads task.md and treats every decision, success criterion, and scope statement in it as a fact, never asking about them again. Restates the task as one sentence and asks for confirmation before research. Produces ordered subtasks where each has one verification command, no 'and' in its title, and depends only on lower-numbered subtasks. Shows one summary per subtask with its title, dependencies, goal, verification command, and code-line estimate, never the task or a full subtask, then writes nothing until approval. Overwrites tasks/004-add-retry-to-webhooks/task.md with the Subtasks section filled and writes tasks/004-add-retry-to-webhooks/001-<subtask-slug>.md upward, each with Task, Depends on, Goal, Context, References, Changes, Acceptance criteria, Verification. Every subtask restates the facts it needs and never writes 'see task' or 'as above'. The last message is one line: the task file path.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Split PAY-212 into subtasks. It already has three child issues from a first attempt that went nowhere.",
+      "expected_output": "Detects that the item already has children and asks one question: replace them, or abort. On replace, writes the approved task body back to PAY-212, deletes the existing children or closes them when the tracker cannot delete, and creates one child item per subtask in order, linking each to PAY-212 with the tracker's parent relation. On abort, stops without changing the tracker. The last message is one line: the identifier and URL of PAY-212.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Break this down: 'Add dark mode to the settings page.' We have no issue tracker connected and no tasks folder.",
+      "expected_output": "Source is free text. Researches the settings page code and interviews on the open decisions with concrete options. Because no tracker is connected, saves the task and subtasks as files in a new task folder under <scratch-dir>/tasks/ with the next free number, never asking which destination. The last message is one line: the absolute path of the task.md file.",
+      "files": []
+    }
+  ]
+}

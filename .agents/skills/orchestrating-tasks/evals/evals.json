@@ -1,0 +1,23 @@
+{
+  "skill_name": "orchestrating-tasks",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Run tasks/004-add-retry-to-webhooks/task.md end to end. It has four subtasks.",
+      "expected_output": "Never opens the task itself: a subagent returns the summary with title, subtasks, commands, verification, and new paths. On the default branch or with a dirty tree, creates a worktree at <scratch-dir>/worktree on branch task/004-add-retry-to-webhooks and states the jobs, tree, and branch in chat. Runs one job at a time with the job prompt template and the implementing-tasks skill, each job ending in one commit with the subtask title as subject. Carries Deviations and Affects other work bullets into later prompts as facts. Runs refactoring-code rounds until an empty round or three rounds, then proves the task with its Verification and commands. Writes orchestration.md in the task folder holding the plan, every work report, and the orchestration report, commits it alone, and removes the worktree keeping the branch. Asks nothing. The final message is the orchestration report with headings Result, Target, Branch, Worktree, Jobs, Refactor rounds, Verification, Commits, Jobs, Changes, Deviations, Affects other work.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Orchestrate tasks/006-typed-config/task.md. Subtasks 001 and 002 were already merged by hand yesterday.",
+      "expected_output": "For each of 001 and 002, a probe of its Verification command and 'test -e' on each path its Changes marks (new) passes, so the job is marked skipped in the record and no work runs for it. Jobs 003 onward run normally. The orchestration report's Jobs line counts 2 skipped, and the Jobs section lists 001 and 002 as skipped without a commit hash.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Orchestrate this: add rate limiting to the login endpoint with a token bucket.",
+      "expected_output": "The input is free text, not a task file or item. The skill ends with one line saying there is no task to run and asking for a task file path or an item identifier, names creating-tasks as the skill that writes a task from text, writes no report, creates no worktree, and makes no commit.",
+      "files": []
+    }
+  ]
+}

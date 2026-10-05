@@ -1,0 +1,23 @@
+{
+  "skill_name": "writing-agent-docs",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Add a rule to our AGENTS.md that database migrations go in packages/db/migrations and never in an app package.",
+      "expected_output": "Reads every AGENTS.md before editing, because placement depends on the deepest folder that covers every place the rule applies. Writes the rule as one terse imperative bullet naming the folder, in the deepest AGENTS.md that covers packages/db and the apps, never repeating it in a parent or child. Keeps a CLAUDE.md beside that AGENTS.md holding only '@AGENTS.md'. Runs node <skill-dir>/scripts/audit.mjs from the repo root afterwards and fixes what it reports until it exits 0.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Audit and shrink our agent docs. Base ref is v1.4.0, the last audit landed there.",
+      "expected_output": "Follows references/audit.md: runs the audit script with --base v1.4.0 and reports words per AGENTS.md and per docs/refs folder. Moves each rule to the deepest folder covering its uses, deletes rules a parent states or that lint, types, or tests already enforce, and checks every claim against the code with git ls-files and git grep. Never drops a rule to save words. Cuts docs/refs sections the repo does not use and rewrites each folder's README.md index. Invokes the writing-glossaries skill with 'from writing-agent-docs: glossary <path>, files <...>' and the disambiguating-text skill with 'from writing-agent-docs: <file path>' when those skills are available, else states in the report that glossary and wording were not checked. Ends with a report holding the size table, each rule moved or reworded, each ambiguity resolved, and what is left for the user. Commits nothing.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Write an ADR saying we use pnpm workspaces for the monorepo.",
+      "expected_output": "Reads references/adr-template.md first. Applying a convention needs no ADR, so the skill states that the choice belongs as one rule in the root AGENTS.md and writes the ADR only when the user confirms a decision that spans packages or is costly to reverse and whose reason no other place shows. When it does write one, the file is docs/adrs/NNNN-<kebab-title>.md with the next free number, sections Context, Decision, Consequences, one row added to docs/adrs/README.md, and the rule it creates lives in an AGENTS.md, not in the ADR.",
+      "files": []
+    }
+  ]
+}

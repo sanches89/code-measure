@@ -44,10 +44,10 @@ after a refactoring. Plain Node.js ESM (`.mjs`), no build step, pnpm.
 ## Docs
 
 - Before editing an AGENTS.md, CLAUDE.md, README.md, ADR, docs/refs/ file or
-  GLOSSARY.md, load the agent-docs skill.
+  GLOSSARY.md, load the writing-agent-docs skill.
 - README.md is the npm page. Keep the CLI's user documentation in it, above
-  the "Development" runbook. This rule outranks the agent-docs rule that a
-  README is a short runbook.
+  the "Development" runbook. This rule outranks the writing-agent-docs rule
+  that a README is a short runbook.
 - Update README.md and `src/help.mjs` in any change to an option, a default,
   an exit code, a summary field or a `--compare` value. No test compares
   them.

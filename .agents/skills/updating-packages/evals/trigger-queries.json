@@ -1,0 +1,12 @@
+[
+  {"query": "run updating-packages on this repo", "should_trigger": true},
+  {"query": "Bump every dependency in every package.json of this monorepo to the newest version the tests still accept, 14 day cooldown.", "should_trigger": true},
+  {"query": "use the updating-packages skill on packages/api only, minor updates, and commit each batch", "should_trigger": true},
+  {"query": "Upgrade our npm packages. Hold anything renovate.json pins, and tell me which majors need a code change.", "should_trigger": true},
+  {"query": "run updating-packages for react and react-dom only, level latest", "should_trigger": true},
+  {"query": "why does npm install fail after I pulled main? something about peer dependencies", "should_trigger": false},
+  {"query": "Add zod as a dependency to packages/api and use it in the config loader.", "should_trigger": false},
+  {"query": "We need to migrate from express 4 to 5. Write a task for the code changes that requires.", "should_trigger": false},
+  {"query": "Which of our dependencies have known security advisories? Just list them.", "should_trigger": false},
+  {"query": "Update the Node version in .nvmrc to 22 and fix whatever breaks.", "should_trigger": false}
+]

@@ -1,0 +1,23 @@
+{
+  "skill_name": "disambiguating-text",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Clarify docs/deploy.md. People keep reading the rollback section two different ways.",
+      "expected_output": "Reads references/clarity-rules.md, then the whole file itself, and records every ambiguity with its location, kind, and readings. Reads GLOSSARY.md when it exists and resolves each referent without a name by searching the code and docs. Interviews only on readings research cannot settle, each option worded as the sentence that replaces the passage, with a recommendation. Rewrites sentence by sentence keeping every heading, level, and order, every code block, code span, URL, and quoted string byte-identical, and the file's original line width. Shows the full rewrite and the clarity report and writes nothing before approval. Writes only docs/deploy.md. Finishes with the clarity report: Resolved, one bullet per ambiguity with before, after, and what settled it; then the second section for words that need a glossary entry.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Rewrite this so it has one reading: 'The service retries the call a few times and then it fails if needed, or maybe logs it.'",
+      "expected_output": "Pasted text, so no file is written and the rewrite shown at approval is the output. 'the service' becomes the named referent when research finds it, else an open decision. 'a few times' becomes a number with a unit. 'if needed', 'maybe', and the 'or' alternative are banned words or alternatives left to the reader, so each becomes a decision the user answers, never an assumption. The rewrite adds no fact the input and the answers did not give.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Make this unambiguous.",
+      "expected_output": "No text and no file path are given, so the skill asks for the text first and does nothing else until it has one.",
+      "files": []
+    }
+  ]
+}

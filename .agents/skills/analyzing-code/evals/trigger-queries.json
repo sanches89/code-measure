@@ -1,0 +1,12 @@
+[
+  {"query": "run analyzing-code on this repo", "should_trigger": true},
+  {"query": "Measure the duplication, complexity, test coverage and mutation score of the release/2.3 branch and rank the worst spots.", "should_trigger": true},
+  {"query": "use the analyzing-code skill on the working tree, i know it takes a while", "should_trigger": true},
+  {"query": "Give me a measurement report for this codebase: hotspots, untested complex functions, surviving mutants. No code changes.", "should_trigger": true},
+  {"query": "run analyzing-code on the main branch and give me the ranked findings", "should_trigger": true},
+  {"query": "Is this code good? Have a look at src/payments and tell me what you think.", "should_trigger": false},
+  {"query": "Review src/payments/service.ts and write a refactor task for the duplication you find.", "should_trigger": false},
+  {"query": "why does npm test fail on the release/2.3 branch?", "should_trigger": false},
+  {"query": "Add test coverage reporting to our CI so every PR shows a coverage percentage.", "should_trigger": false},
+  {"query": "Compare the complexity of main against release/2.3 and tell me which got worse.", "should_trigger": false}
+]

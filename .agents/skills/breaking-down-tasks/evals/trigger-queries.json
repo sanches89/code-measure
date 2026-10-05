@@ -1,0 +1,12 @@
+[
+  {"query": "tasks/012-typed-config/task.md is approved but it touches like 30 files. chop it into PR-sized chunks I can merge one at a time, each with its own test command", "should_trigger": true},
+  {"query": "PAY-212 in linear is one giant ticket. Turn it into child issues that a junior dev could take one by one without reading the whole thing.", "should_trigger": true},
+  {"query": "Here is the spec our PM wrote for the new export flow (pasted below). It is too big for a single commit, plan the sequence of changes so the build stays green after every step.", "should_trigger": true},
+  {"query": "issue #128 needs to be split up. the auth refactor and the new login page shouldn't ship together. make subtasks and order them by what depends on what", "should_trigger": true},
+  {"query": "We have tasks/003-search-index/task.md. Before anyone starts, work out the commit-by-commit breakdown and what feature flag hides the half-done state.", "should_trigger": true},
+  {"query": "Implement subtask tasks/012-typed-config/002-add-zod-schema.md and make the tests pass.", "should_trigger": false},
+  {"query": "I have an idea for rate limiting the login endpoint. Research the codebase and write the task for it.", "should_trigger": false},
+  {"query": "Run all the subtasks of tasks/003-search-index/ in order, one commit each, then do a cleanup pass.", "should_trigger": false},
+  {"query": "Can you explain how subtask 002 in tasks/012-typed-config depends on 001? Just a summary, no changes.", "should_trigger": false},
+  {"query": "split src/payments/service.ts into smaller modules, it has grown to 900 lines", "should_trigger": false}
+]
