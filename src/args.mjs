@@ -3,7 +3,7 @@ import { existsSync, readFileSync } from "node:fs";
 export const MEASUREMENTS = ["duplication", "complexity", "hotspots"];
 const VALUE_OPTIONS = ["--compare", "--test-report", "--coverage-report", "--mutation-report", "--ignore", "--skip", "--top", "--min-tokens", "--min-lines", "--ccn", "--length", "--params", "--since"];
 const NUMBER_OPTIONS = { "--top": "top", "--min-tokens": "minTokens", "--min-lines": "minLines", "--ccn": "ccn", "--length": "length", "--params": "params" };
-const FIXED_BY_COMPARE = ["--min-tokens", "--min-lines", "--ccn", "--length", "--params", "--ignore"];
+const FIXED_BY_COMPARE = { "--min-tokens": "minTokens", "--min-lines": "minLines", "--ccn": "ccn", "--length": "length", "--params": "params", "--ignore": "ignore" };
 
 export const DEFAULTS = { top: 20, minTokens: 50, minLines: 5, ccn: 10, length: 50, params: 4, since: "12 months ago", ignore: [] };
 
@@ -65,9 +65,9 @@ const applyBefore = (result, given) => {
     throw new UsageError(`cannot read --compare file ${compareFile}: ${error.message}. Expected a summary saved from an earlier run.`);
   }
   if (!before || before.version !== 1 || !before.settings) throw new UsageError(`${compareFile} is not a summary of this tool. Save one first: code-measure <path>... > <file>.`);
-  const fixed = FIXED_BY_COMPARE.filter((option) => given.has(option));
+  const fixed = Object.keys(FIXED_BY_COMPARE).filter((option) => given.has(option));
   if (fixed.length) throw new UsageError(`${fixed.join(", ")} cannot be combined with --compare, which reuses the limits of ${compareFile}.`);
-  for (const key of ["minTokens", "minLines", "ccn", "length", "params", "ignore"]) settings[key] = before.settings[key];
+  for (const key of Object.values(FIXED_BY_COMPARE)) settings[key] = before.settings[key];
   if (!given.has("--since")) settings.since = before.settings.since;
   if (!result.paths.length) result.paths = before.paths;
   result.before = before;
