@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { spans } from "../complexity.mjs";
 import { createResolver } from "../coverage/resolve.mjs";
-import { notRequested, percent } from "../summary.mjs";
+import { groupBy, notRequested, percent } from "../summary.mjs";
 import { FORMATS, readReport } from "./formats.mjs";
 
 // Most detected first. A mutant that two reports name keeps the status that comes first.
@@ -59,18 +59,10 @@ export const summarizeMutation = ({ reports, functions, resolve, top }) => {
   const { mutants, names } = mergeReports(reports, resolve);
   if (!mutants.length) return { status: "failed", format, reason: `none of the ${names.size} file(s) in the mutation report is a file under the paths. Run from the project root, and pass a report of the code under the paths.` };
 
-  const perFile = new Map();
-  for (const mutant of mutants) {
-    if (!perFile.has(mutant.file)) perFile.set(mutant.file, []);
-    perFile.get(mutant.file).push(mutant);
-  }
+  const perFile = groupBy(mutants, (m) => m.file);
   const fileStats = [...perFile].map(([file, list]) => ({ file, ...countStatuses(list) }));
   const survivedIn = new Map(fileStats.map((f) => [f.file, f.survived]));
-  const functionsIn = new Map();
-  for (const fn of functions ?? []) {
-    if (!functionsIn.has(fn.file)) functionsIn.set(fn.file, []);
-    functionsIn.get(fn.file).push(fn);
-  }
+  const functionsIn = groupBy(functions ?? [], (fn) => fn.file);
 
   const counts = countStatuses(mutants);
   counts.ignored += reports.reduce((sum, r) => sum + r.skipped, 0);
