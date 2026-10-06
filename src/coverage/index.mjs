@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { spans } from "../complexity.mjs";
 import { notRequested } from "../tests.mjs";
-import { addBranch, addLine, entryFor } from "./data.mjs";
+import { addBranch, addLine, entryFor, tally } from "./data.mjs";
 import { readReport } from "./formats.mjs";
 import { createResolver } from "./resolve.mjs";
 
@@ -10,27 +10,16 @@ export const percent = (covered, total) => (total ? Number(((100 * covered) / to
 /** CRAP = ccn^2 * (1 - coverage)^3 + ccn, with coverage as a ratio from 0 to 1. */
 export const crap = (ccn, ratio) => Number((ccn ** 2 * (1 - ratio) ** 3 + ccn).toFixed(1));
 
+const NOT_LOADED = { lines: { covered: 0, total: 0 }, branches: { covered: 0, total: 0 } };
+
 /** Coverage per function: the report lines and branches inside its line range. A file the report lacks was never loaded: 0. */
 export const summarizeFunctionCoverage = (functions, perFile, top) => {
   const counts = { covered: 0, partly: 0, none: 0 };
   const risky = [];
   for (const fn of functions) {
     const entry = perFile.get(fn.file);
-    const lines = { covered: 0, total: 0 };
-    const branches = { covered: 0, total: 0 };
-    if (entry) {
-      for (const [line, hits] of entry.lines) {
-        if (!spans(fn, line)) continue;
-        lines.total++;
-        if (hits > 0) lines.covered++;
-      }
-      for (const branch of entry.branches.values()) {
-        if (!spans(fn, branch.line)) continue;
-        branches.total += branch.total;
-        branches.covered += branch.covered;
-      }
-      if (!lines.total) continue; // nothing executable in the report, such as a declaration
-    }
+    const { lines, branches } = entry ? tally(entry, (line) => spans(fn, line)) : NOT_LOADED;
+    if (entry && !lines.total) continue; // nothing executable in the report, such as a declaration
     const ratio = entry ? lines.covered / lines.total : 0;
     const full = ratio === 1 && branches.covered === branches.total;
     counts[full ? "covered" : ratio === 0 ? "none" : "partly"]++;
@@ -54,15 +43,8 @@ export const summarizeCoverage = ({ data, sources, formats, codeFiles, functions
   if (!perFile.size) return { status: "failed", format, reason: `none of the ${data.size} file(s) in the report is a file under the paths. Run from the project root, and pass a report of the code under the paths.` };
 
   const fileStats = [...perFile].map(([file, entry]) => {
-    const hits = [...entry.lines.values()];
-    const branches = [...entry.branches.values()];
-    return {
-      file,
-      linesTotal: hits.length,
-      linesCovered: hits.filter((h) => h > 0).length,
-      branchesTotal: branches.reduce((sum, b) => sum + b.total, 0),
-      branchesCovered: branches.reduce((sum, b) => sum + b.covered, 0),
-    };
+    const { lines, branches } = tally(entry);
+    return { file, linesTotal: lines.total, linesCovered: lines.covered, branchesTotal: branches.total, branchesCovered: branches.covered };
   });
   const sum = (key) => fileStats.reduce((total, f) => total + f[key], 0);
   const totals = (covered, total) => ({ total, covered, uncovered: total - covered, percentage: percent(covered, total) });
