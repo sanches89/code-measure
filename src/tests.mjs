@@ -1,10 +1,8 @@
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
+import { notRequested, oneLine } from "./summary.mjs";
 import { parseXml } from "./xml.mjs";
 
-export const notRequested = (flag) => ({ status: "skipped", reason: `no ${flag} given`, notRequested: true });
-
-export const oneLine = (text) => String(text ?? "").replace(/\s+/g, " ").trim().slice(0, 160);
 const has = (testcase, tag) => Object.hasOwn(testcase, tag);
 
 const outcomeOf = (testcase) => {

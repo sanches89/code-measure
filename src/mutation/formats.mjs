@@ -1,4 +1,4 @@
-import { oneLine } from "../tests.mjs";
+import { oneLine } from "../summary.mjs";
 import { collect, parseXml } from "../xml.mjs";
 
 // The status of each tool, as a bucket of the summary. A status missing here counts as ignored.

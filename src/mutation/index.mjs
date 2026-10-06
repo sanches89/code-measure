@@ -1,8 +1,7 @@
 import { readFileSync } from "node:fs";
-import { percent } from "../coverage/index.mjs";
 import { spans } from "../complexity.mjs";
 import { createResolver } from "../coverage/resolve.mjs";
-import { notRequested } from "../tests.mjs";
+import { notRequested, percent } from "../summary.mjs";
 import { FORMATS, readReport } from "./formats.mjs";
 
 // Most detected first. A mutant that two reports name keeps the status that comes first.
