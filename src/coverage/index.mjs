@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { spans } from "../complexity.mjs";
 import { notRequested } from "../tests.mjs";
-import { addBranch, addLine, entryFor, tally } from "./data.mjs";
+import { entryFor, mergeEntry, tally } from "./data.mjs";
 import { FORMATS, readReport } from "./formats.mjs";
 import { createResolver } from "./resolve.mjs";
 
@@ -35,9 +35,7 @@ export const summarizeCoverage = ({ data, sources, formats, codeFiles, functions
   for (const [name, entry] of data) {
     const file = resolve(name, sources);
     if (!file) continue;
-    const merged = entryFor(perFile, file);
-    for (const [line, hits] of entry.lines) addLine(merged, line, hits);
-    for (const [key, b] of entry.branches) addBranch(merged, key, b.line, b.covered, b.total);
+    mergeEntry(entryFor(perFile, file), entry);
   }
   const format = [...formats].join(",");
   if (!perFile.size) return { status: "failed", format, reason: `none of the ${data.size} file(s) in the report is a file under the paths. Run from the project root, and pass a report of the code under the paths.` };

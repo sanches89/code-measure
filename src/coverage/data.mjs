@@ -13,6 +13,11 @@ export const addBranch = (entry, key, line, covered, total) => {
   entry.branches.set(key, { line, covered: Math.max(old?.covered ?? 0, covered), total: Math.max(old?.total ?? 0, total) });
 };
 
+export const mergeEntry = (into, from) => {
+  for (const [line, hits] of from.lines) addLine(into, line, hits);
+  for (const [key, b] of from.branches) addBranch(into, key, b.line, b.covered, b.total);
+};
+
 /** Covered and total lines and branches of an entry, counting only the lines `keep` accepts. */
 export const tally = (entry, keep = () => true) => {
   const lines = { covered: 0, total: 0 };
