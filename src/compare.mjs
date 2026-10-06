@@ -18,6 +18,10 @@ const PAIRS = [
 
 const pick = (summary, name) => name.split(".").reduce((value, key) => value?.[key], summary);
 
+const unasked = (summary, part) => !summary[part] || summary[part].notRequested;
+const measured = (summary, part) => summary[part]?.status === "ok";
+const isWorse = (direction, was, now) => (direction === "falls" ? now < was : now > was);
+
 /** Compare two summaries. Returns { delta, worse, notCompared }. */
 export const compare = (before, after) => {
   const delta = {};
@@ -25,9 +29,8 @@ export const compare = (before, after) => {
   const notCompared = [];
   for (const [name, direction] of PAIRS) {
     const part = name.split(".")[0];
-    const unasked = (summary) => !summary[part] || summary[part].notRequested;
-    if (unasked(before) && unasked(after)) continue;
-    if (before[part]?.status !== "ok" || after[part]?.status !== "ok") {
+    if (unasked(before, part) && unasked(after, part)) continue;
+    if (!measured(before, part) || !measured(after, part)) {
       if (!notCompared.includes(part)) notCompared.push(part);
       continue;
     }
@@ -35,7 +38,7 @@ export const compare = (before, after) => {
     const now = pick(after, name);
     if (typeof was !== "number" || typeof now !== "number") continue;
     delta[name] = { before: was, after: now };
-    if (direction === "falls" ? now < was : now > was) worse.push(name);
+    if (isWorse(direction, was, now)) worse.push(name);
   }
   return { delta, worse, notCompared };
 };
