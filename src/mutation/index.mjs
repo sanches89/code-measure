@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs";
 import { percent } from "../coverage/index.mjs";
+import { spans } from "../complexity.mjs";
 import { createResolver } from "../coverage/resolve.mjs";
 import { notRequested } from "../tests.mjs";
 import { readReport } from "./formats.mjs";
@@ -22,7 +23,7 @@ const byText = (x, y) => (x < y ? -1 : x > y ? 1 : 0);
 export const functionAt = (functions, line) => {
   let found = null;
   for (const fn of functions) {
-    if (line === null || line < fn.line || line > fn.end) continue;
+    if (line === null || !spans(fn, line)) continue;
     if (!found || fn.line > found.line || (fn.line === found.line && fn.end < found.end)) found = fn;
   }
   return found?.function ?? null;

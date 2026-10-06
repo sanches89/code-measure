@@ -45,6 +45,9 @@ export const parseLizardCsv = (text) =>
     .filter((r) => r.length >= 11 && /^\d+$/.test(r[1]))
     .map((r) => ({ function: r[7], file: rel(r[6]), line: Number(r[9]), end: Number(r[10]), ccn: Number(r[1]), length: Number(r[4]), params: Number(r[3]) }));
 
+/** Whether `line` lies inside the line range of function `fn`. */
+export const spans = (fn, line) => fn.line <= line && line <= fn.end;
+
 /** The complexity part of the summary, plus `perFile` (summed ccn) and `all` (every function) for the other measurements. */
 export const summarizeFunctions = (functions, settings) => {
   const over = (f) => f.ccn > settings.ccn || f.length > settings.length || f.params > settings.params;

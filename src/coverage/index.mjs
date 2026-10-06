@@ -1,4 +1,5 @@
 import { readFileSync } from "node:fs";
+import { spans } from "../complexity.mjs";
 import { notRequested } from "../tests.mjs";
 import { addBranch, addLine, entryFor } from "./data.mjs";
 import { readReport } from "./formats.mjs";
@@ -19,12 +20,12 @@ export const summarizeFunctionCoverage = (functions, perFile, top) => {
     const branches = { covered: 0, total: 0 };
     if (entry) {
       for (const [line, hits] of entry.lines) {
-        if (line < fn.line || line > fn.end) continue;
+        if (!spans(fn, line)) continue;
         lines.total++;
         if (hits > 0) lines.covered++;
       }
       for (const branch of entry.branches.values()) {
-        if (branch.line < fn.line || branch.line > fn.end) continue;
+        if (!spans(fn, branch.line)) continue;
         branches.total += branch.total;
         branches.covered += branch.covered;
       }
