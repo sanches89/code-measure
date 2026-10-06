@@ -4,6 +4,10 @@ Measure the files and folders given as paths (default: the current directory)
 and print one JSON summary on stdout. Run it from the root of the measured
 project. It changes no file of the project and installs nothing into it.
 
+Every measurement leaves out these extensions, as not code: md, mdx, txt,
+json, jsonc, yaml, yml, toml, lock, svg, snap, csv, tsv, xml, html, map, css,
+sql, sh. Only "files" in the summary counts them.
+
 Measurements:
   duplication  jscpd: duplicated lines, clone count, the largest clones.
   complexity   lizard: per function cyclomatic complexity (ccn), length in

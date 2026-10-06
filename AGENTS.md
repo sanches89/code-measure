@@ -49,5 +49,12 @@ after a refactoring. Plain Node.js ESM (`.mjs`), no build step, pnpm.
   the "Development" runbook. This rule outranks the writing-agent-docs rule
   that a README is a short runbook.
 - Update README.md and `src/help.mjs` in any change to an option, a default,
-  an exit code, a summary field or a `--compare` value. No test compares
-  them.
+  an exit code, a summary field, a `--compare` value or `NOT_CODE` in
+  `src/files.mjs`. No test compares them.
+
+## Skills
+
+- Update the skills in `.agents/skills` with `npx skills update -p -y`.
+- Add one with `npx skills add sanches89/ai-skills --skill <name> -a
+  claude-code zed -y`. Without `zed`, it copies into `.claude/skills` instead
+  of linking to `.agents/skills`.

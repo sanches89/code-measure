@@ -43,6 +43,11 @@ out. Outside one it walks the paths, skipping folders such as `node_modules`,
 `vendor`, `dist`, `build`, and `target`. Leave generated and vendored code out
 with `--ignore`, so that the numbers track the code the refactoring touches.
 
+Every measurement leaves out files with an extension that marks them as not
+code: `md`, `mdx`, `txt`, `json`, `jsonc`, `yaml`, `yml`, `toml`, `lock`,
+`svg`, `snap`, `csv`, `tsv`, `xml`, `html`, `map`, `css`, `sql`, and `sh`.
+Only `files` in the summary counts them.
+
 The package ships jscpd, so `duplication` needs nothing more. The other
 measurements do:
 
@@ -251,8 +256,8 @@ code-measure src \
 
 Vitest needs `@vitest/coverage-v8` installed before `--coverage` works, and its
 v8 provider may report only the files the tests import. Add
-`--coverage.include='src/**'` when the coverage report covers fewer files than
-`files` in the summary.
+`--coverage.include='src/**'` when `coverage.filesNotInReport` in the summary
+is not empty.
 
 A folder of JUnit reports, and a coverage report per package, from a monorepo
 where each workspace writes its own:
