@@ -60,6 +60,9 @@ export const parseGoProfile = (text, data) => {
   }
 };
 
+// The list of formats `detectFormat` reads, which the unknown-format reason names.
+export const FORMATS = "LCOV, Cobertura XML, JaCoCo XML, or a Go cover profile";
+
 /** "lcov", "go", "cobertura", "jacoco", or null. */
 export const detectFormat = (text) => {
   const head = text.slice(0, 4000);

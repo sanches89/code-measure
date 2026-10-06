@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { spans } from "../complexity.mjs";
 import { notRequested } from "../tests.mjs";
 import { addBranch, addLine, entryFor, tally } from "./data.mjs";
-import { readReport } from "./formats.mjs";
+import { FORMATS, readReport } from "./formats.mjs";
 import { createResolver } from "./resolve.mjs";
 
 export const percent = (covered, total) => (total ? Number(((100 * covered) / total).toFixed(2)) : null);
@@ -76,7 +76,7 @@ export const measureCoverage = ({ coverageReports, codeFiles, functions, everyFi
     } catch (error) {
       return { status: "failed", reason: `${report} is not valid XML: ${error.message}` };
     }
-    if (!format) return { status: "failed", reason: `${report} is not LCOV, Cobertura XML, JaCoCo XML, or a Go cover profile.` };
+    if (!format) return { status: "failed", reason: `${report} is not ${FORMATS}.` };
     formats.add(format);
   }
   const resolve = createResolver(new Set(codeFiles), everyFile);

@@ -3,7 +3,7 @@ import { percent } from "../coverage/index.mjs";
 import { spans } from "../complexity.mjs";
 import { createResolver } from "../coverage/resolve.mjs";
 import { notRequested } from "../tests.mjs";
-import { readReport } from "./formats.mjs";
+import { FORMATS, readReport } from "./formats.mjs";
 
 // Most detected first. A mutant that two reports name keeps the status that comes first.
 const STATUSES = ["killed", "timeout", "survived", "noCoverage", "invalid", "ignored"];
@@ -106,7 +106,7 @@ export const measureMutation = ({ mutationReports, codeFiles, functions, everyFi
     } catch (error) {
       return { status: "failed", reason: `${path} ${error.message}` };
     }
-    if (!report) return { status: "failed", reason: `${path} is not a Stryker mutation-testing-report JSON, a PIT mutations.xml, a cargo-mutants outcomes.json, or an Infection JSON log.` };
+    if (!report) return { status: "failed", reason: `${path} is not ${FORMATS}.` };
     reports.push(report);
   }
   const resolve = createResolver(new Set(codeFiles), everyFile);

@@ -108,6 +108,9 @@ const parseAs = (syntax, parse, text) => {
   }
 };
 
+// The list of formats `readReport` reads, which the unknown-format reason names.
+export const FORMATS = "a Stryker mutation-testing-report JSON, a PIT mutations.xml, a cargo-mutants outcomes.json, or an Infection JSON log";
+
 /**
  * Read one report text, of any format, as { format, mutants, sources, skipped }, or null when the format is unknown.
  * Each mutant is { name, line, function, mutator, change, status }, with `name` the path the report gives.
