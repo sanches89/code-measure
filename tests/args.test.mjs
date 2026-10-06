@@ -61,3 +61,5 @@ test("parseArgs rejects a --compare file that is not a summary", (t) => {
   writeFileSync(file, JSON.stringify({ hello: "world" }));
   usageError(["--compare", file], /is not a summary of this tool/);
 });
+
+test("parseArgs rejects a --compare file that cannot be read", () => usageError(["--compare", "no-such-before.json"], /cannot read --compare file no-such-before.json/));

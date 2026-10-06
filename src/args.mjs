@@ -55,9 +55,8 @@ const readOptions = (argv, given) => {
   return result;
 };
 
-/** Load the summary of --compare and take its limits, and its paths when the command line names none. */
-const applyBefore = (result, compareFile, given) => {
-  const { settings } = result;
+/** Read the summary saved by an earlier run and check that it is one. */
+const loadSummary = (compareFile) => {
   let before;
   try {
     before = JSON.parse(readFileSync(compareFile, "utf8"));
@@ -65,6 +64,13 @@ const applyBefore = (result, compareFile, given) => {
     throw new UsageError(`cannot read --compare file ${compareFile}: ${error.message}. Expected a summary saved from an earlier run.`);
   }
   if (!before || before.version !== 1 || !before.settings) throw new UsageError(`${compareFile} is not a summary of this tool. Save one first: code-measure <path>... > <file>.`);
+  return before;
+};
+
+/** Load the summary of --compare and take its limits, and its paths when the command line names none. */
+const applyBefore = (result, compareFile, given) => {
+  const { settings } = result;
+  const before = loadSummary(compareFile);
   const fixed = Object.keys(FIXED_BY_COMPARE).filter((option) => given.has(option));
   if (fixed.length) throw new UsageError(`${fixed.join(", ")} cannot be combined with --compare, which reuses the limits of ${compareFile}.`);
   for (const key of Object.values(FIXED_BY_COMPARE)) settings[key] = before.settings[key];
