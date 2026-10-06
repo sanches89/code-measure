@@ -1,6 +1,6 @@
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
-import { collect, parseXml } from "./xml.mjs";
+import { parseXml } from "./xml.mjs";
 
 export const notRequested = (flag) => ({ status: "skipped", reason: `no ${flag} given`, notRequested: true });
 
