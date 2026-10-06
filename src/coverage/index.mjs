@@ -10,7 +10,7 @@ export const percent = (covered, total) => (total ? Number(((100 * covered) / to
 export const crap = (ccn, ratio) => Number((ccn ** 2 * (1 - ratio) ** 3 + ccn).toFixed(1));
 
 /** Coverage per function: the report lines and branches inside its line range. A file the report lacks was never loaded: 0. */
-export const coverFunctions = (functions, perFile, top) => {
+export const summarizeFunctionCoverage = (functions, perFile, top) => {
   const counts = { covered: 0, partly: 0, none: 0 };
   const risky = [];
   for (const fn of functions) {
@@ -77,7 +77,7 @@ export const summarizeCoverage = ({ data, sources, formats, codeFiles, functions
       .filter((f) => f.uncoveredLines || f.uncoveredBranches)
       .sort((x, y) => y.uncoveredLines - x.uncoveredLines || y.uncoveredBranches - x.uncoveredBranches)
       .slice(0, top),
-    functions: functions ? coverFunctions(functions, perFile, top) : { status: "skipped", reason: "needs the complexity measurement" },
+    functions: functions ? summarizeFunctionCoverage(functions, perFile, top) : { status: "skipped", reason: "needs the complexity measurement" },
   };
 };
 

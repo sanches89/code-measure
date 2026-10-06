@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test, { before } from "node:test";
-import { coverFunctions, crap, measureCoverage, summarizeCoverage } from "../src/coverage/index.mjs";
+import { summarizeFunctionCoverage, crap, measureCoverage, summarizeCoverage } from "../src/coverage/index.mjs";
 import { detectFormat, readReport } from "../src/coverage/formats.mjs";
 import { createResolver } from "../src/coverage/resolve.mjs";
 import { listFiles } from "../src/files.mjs";
@@ -105,9 +105,9 @@ test("summarizeCoverage totals lines and branches of the files under the paths",
   assert.deepEqual(summary.top, [{ file: "src/calc.mjs", lines: 50, branches: 75, uncoveredLines: 9, uncoveredBranches: 2 }]);
 });
 
-test("coverFunctions ranks by CRAP and counts a function of a file that the report lacks as not covered", () => {
+test("summarizeFunctionCoverage ranks by CRAP and counts a function of a file that the report lacks as not covered", () => {
   const { data } = read("lcov.info");
-  const result = coverFunctions(FUNCTIONS, new Map([["src/calc.mjs", data.get("src/calc.mjs")]]), 20);
+  const result = summarizeFunctionCoverage(FUNCTIONS, new Map([["src/calc.mjs", data.get("src/calc.mjs")]]), 20);
   assert.deepEqual({ covered: result.covered, partly: result.partly, none: result.none }, { covered: 0, partly: 2, none: 1 });
   assert.deepEqual(result.top.map((f) => [f.function, f.lines, f.branches, f.crap]), [
     ["grade", 63.64, 75, 7.7],
@@ -116,12 +116,12 @@ test("coverFunctions ranks by CRAP and counts a function of a file that the repo
   ]);
 });
 
-test("coverFunctions counts a function as covered only with every line and every branch run", () => {
+test("summarizeFunctionCoverage counts a function as covered only with every line and every branch run", () => {
   const entry = { lines: new Map([[1, 1], [2, 1]]), branches: new Map([["2", { line: 2, covered: 1, total: 2 }]]) };
-  const partly = coverFunctions([{ function: "f", file: "a", line: 1, end: 2, ccn: 2 }], new Map([["a", entry]]), 20);
+  const partly = summarizeFunctionCoverage([{ function: "f", file: "a", line: 1, end: 2, ccn: 2 }], new Map([["a", entry]]), 20);
   assert.equal(partly.partly, 1);
   entry.branches.set("2", { line: 2, covered: 2, total: 2 });
-  const covered = coverFunctions([{ function: "f", file: "a", line: 1, end: 2, ccn: 2 }], new Map([["a", entry]]), 20);
+  const covered = summarizeFunctionCoverage([{ function: "f", file: "a", line: 1, end: 2, ccn: 2 }], new Map([["a", entry]]), 20);
   assert.deepEqual({ covered: covered.covered, top: covered.top }, { covered: 1, top: [] });
 });
 
