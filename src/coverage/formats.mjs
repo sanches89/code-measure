@@ -18,6 +18,13 @@ export const parseLcov = (text, data) => {
   }
 };
 
+const addCoberturaLine = (entry, line) => {
+  const number = Number(line["@_number"]);
+  addLine(entry, number, Number(line["@_hits"]) || 0);
+  const condition = /\((\d+)\/(\d+)\)/.exec(line["@_condition-coverage"] ?? "");
+  if (condition) addBranch(entry, String(number), number, Number(condition[1]), Number(condition[2]));
+};
+
 /** Cobertura XML: <class filename> with <line number hits condition-coverage="50% (1/2)">. Pushes each <source> root to `sources`. */
 export const parseCobertura = (root, data, sources) => {
   for (const source of collect(root, "source")) sources.push(String(typeof source === "object" ? source["#text"] ?? "" : source).trim());
@@ -25,12 +32,7 @@ export const parseCobertura = (root, data, sources) => {
     if (!cls?.["@_filename"]) continue;
     const entry = entryFor(data, cls["@_filename"]);
     // <methods> repeats the lines of <lines>. The data keeps the highest value per line.
-    for (const line of collect(cls, "line")) {
-      const number = Number(line["@_number"]);
-      addLine(entry, number, Number(line["@_hits"]) || 0);
-      const condition = /\((\d+)\/(\d+)\)/.exec(line["@_condition-coverage"] ?? "");
-      if (condition) addBranch(entry, String(number), number, Number(condition[1]), Number(condition[2]));
-    }
+    for (const line of collect(cls, "line")) addCoberturaLine(entry, line);
   }
 };
 
