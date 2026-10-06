@@ -7,6 +7,12 @@ export const notRequested = (flag) => ({ status: "skipped", reason: `no ${flag} 
 export const oneLine = (text) => String(text ?? "").replace(/\s+/g, " ").trim().slice(0, 160);
 const has = (testcase, tag) => Object.hasOwn(testcase, tag);
 
+const outcomeOf = (testcase) => {
+  if (has(testcase, "failure") || has(testcase, "error")) return "failed";
+  if (has(testcase, "skipped")) return "skipped";
+  return "passed";
+};
+
 /** Test cases of one JUnit XML text, as { name, outcome, seconds }. Suites nest to any depth. */
 export const parseJunit = (text) => {
   const root = parseXml(text);
@@ -22,8 +28,7 @@ export const parseJunit = (text) => {
         continue;
       }
       const name = [testcase["@_classname"], testcase["@_name"]].filter(Boolean).join(" ");
-      const outcome = has(testcase, "failure") || has(testcase, "error") ? "failed" : has(testcase, "skipped") ? "skipped" : "passed";
-      cases.push({ name: oneLine(name), outcome, seconds: Number(testcase["@_time"]) || 0 });
+      cases.push({ name: oneLine(name), outcome: outcomeOf(testcase), seconds: Number(testcase["@_time"]) || 0 });
     }
     visit(node.testsuite);
     visit(node.testsuites);
