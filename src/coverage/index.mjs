@@ -10,6 +10,12 @@ export const crap = (ccn, ratio) => Number((ccn ** 2 * (1 - ratio) ** 3 + ccn).t
 
 const NOT_LOADED = { lines: { covered: 0, total: 0 }, branches: { covered: 0, total: 0 } };
 
+const coverageClass = (ratio, full) => {
+  if (full) return "covered";
+  if (ratio === 0) return "none";
+  return "partly";
+};
+
 /** Coverage per function: the report lines and branches inside its line range. A file the report lacks was never loaded: 0. */
 export const summarizeFunctionCoverage = (functions, perFile, top) => {
   const counts = { covered: 0, partly: 0, none: 0 };
@@ -20,7 +26,7 @@ export const summarizeFunctionCoverage = (functions, perFile, top) => {
     if (entry && !lines.total) continue; // nothing executable in the report, such as a declaration
     const ratio = entry ? lines.covered / lines.total : 0;
     const full = ratio === 1 && branches.covered === branches.total;
-    counts[full ? "covered" : ratio === 0 ? "none" : "partly"]++;
+    counts[coverageClass(ratio, full)]++;
     if (full) continue;
     risky.push({ function: fn.function, file: fn.file, line: fn.line, ccn: fn.ccn, lines: Number((100 * ratio).toFixed(2)), branches: percent(branches.covered, branches.total), crap: crap(fn.ccn, ratio) });
   }
