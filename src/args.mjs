@@ -56,8 +56,8 @@ const readOptions = (argv, given) => {
 };
 
 /** Load the summary of --compare and take its limits, and its paths when the command line names none. */
-const applyBefore = (result, given) => {
-  const { compareFile, settings } = result;
+const applyBefore = (result, compareFile, given) => {
+  const { settings } = result;
   let before;
   try {
     before = JSON.parse(readFileSync(compareFile, "utf8"));
@@ -84,8 +84,7 @@ const checkExists = ({ paths, testReports, coverageReports, mutationReports }) =
 export const parseArgs = (argv) => {
   const given = new Set();
   const { compareFile, ...result } = readOptions(argv, given);
-  if (compareFile) applyBefore(Object.assign(result, { compareFile }), given);
-  delete result.compareFile;
+  if (compareFile) applyBefore(result, compareFile, given);
   if (!result.paths.length) result.paths = ["."];
   checkExists(result);
   return result;
