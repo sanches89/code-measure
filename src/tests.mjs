@@ -48,13 +48,18 @@ export const summarizeCases = (cases, top) => {
   };
 };
 
-export const measureTests = (testReports, settings) => {
-  if (!testReports.length) return notRequested("--test-report");
+const reportFiles = (testReports) => {
   const reports = [];
   for (const path of testReports) {
     if (statSync(path).isDirectory()) reports.push(...readdirSync(path).filter((f) => f.toLowerCase().endsWith(".xml")).sort().map((f) => join(path, f)));
     else reports.push(path);
   }
+  return reports;
+};
+
+export const measureTests = (testReports, settings) => {
+  if (!testReports.length) return notRequested("--test-report");
+  const reports = reportFiles(testReports);
   const cases = [];
   for (const report of reports) {
     try {
