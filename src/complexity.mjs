@@ -6,12 +6,24 @@ import { findRunner, firstLine, run } from "./run.mjs";
 
 const LIZARD_RUNNERS = [["lizard"], ["uvx", "lizard"], ["pipx", "run", "lizard"], ["python3", "-m", "lizard"], ["python", "-m", "lizard"]];
 
+/** Read a quoted part of a field. `i` is just after the opening quote. Returns the unescaped text and the index after the closing quote, or the text length when it never closes. */
+const readQuoted = (text, i) => {
+  let content = "";
+  for (; i < text.length; i++) {
+    if (text[i] !== '"') content += text[i];
+    else if (text[i + 1] === '"') {
+      content += '"';
+      i++;
+    } else return [content, i + 1];
+  }
+  return [content, text.length];
+};
+
 /** Parse CSV with quoted fields into rows of strings. Skips rows with one field. */
 export const parseCsv = (text) => {
   const rows = [];
   let row = [];
   let field = "";
-  let quoted = false;
   const endRow = () => {
     row.push(field);
     if (row.length > 1) rows.push(row);
@@ -20,14 +32,11 @@ export const parseCsv = (text) => {
   };
   for (let i = 0; i < text.length; i++) {
     const char = text[i];
-    if (quoted) {
-      if (char === '"' && text[i + 1] === '"') {
-        field += '"';
-        i++;
-      } else if (char === '"') quoted = false;
-      else field += char;
-    } else if (char === '"') quoted = true;
-    else if (char === ",") {
+    if (char === '"') {
+      const [content, next] = readQuoted(text, i + 1);
+      field += content;
+      i = next - 1;
+    } else if (char === ",") {
       row.push(field);
       field = "";
     } else if (char === "\n" || char === "\r") {

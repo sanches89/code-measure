@@ -15,6 +15,18 @@ test("parseCsv reads the last row without a line break", () => {
   assert.deepEqual(parseCsv("a,b\nc,d"), [["a", "b"], ["c", "d"]]);
 });
 
+test("parseCsv opens a quote in the middle of a field", () => {
+  assert.deepEqual(parseCsv('a"b,c"d,e\n'), [["ab,cd", "e"]]);
+});
+
+test("parseCsv keeps the rest of the text in an unterminated quote", () => {
+  assert.deepEqual(parseCsv('a,"b,c'), [["a", "b,c"]]);
+});
+
+test("parseCsv ends a row at a lone CR and at a CRLF", () => {
+  assert.deepEqual(parseCsv("a,b\rc,d\r\ne,f\n"), [["a", "b"], ["c", "d"], ["e", "f"]]);
+});
+
 const CSV = [
   '7,2,31,1,7,"atBase@59-65@src/audit.mjs","src/audit.mjs","atBase","atBase ( path )",59,65',
   '60,12,300,5,70,"big@1-70@src/big.mjs","src/big.mjs","big","big ( a , b , c , d , e )",1,70',
