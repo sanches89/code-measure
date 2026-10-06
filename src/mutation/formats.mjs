@@ -108,6 +108,13 @@ const parseAs = (syntax, parse, text) => {
   }
 };
 
+const readJsonReport = (json) => {
+  if (typeof json.schemaVersion === "string" && isObject(json.files)) return parseStryker(json);
+  if (Array.isArray(json.outcomes) && typeof json.cargo_mutants_version === "string") return parseCargoMutants(json);
+  if (isObject(json.stats) && Array.isArray(json.killed) && Array.isArray(json.escaped)) return parseInfection(json);
+  return null;
+};
+
 // The list of formats `readReport` reads, which the unknown-format reason names.
 export const FORMATS = "a Stryker mutation-testing-report JSON, a PIT mutations.xml, a cargo-mutants outcomes.json, or an Infection JSON log";
 
@@ -120,10 +127,7 @@ export const readReport = (text) => {
   const body = text.replace(/^﻿/, "");
   if (body.trimStart().startsWith("{")) {
     const json = parseAs("JSON", JSON.parse, body);
-    if (typeof json.schemaVersion === "string" && isObject(json.files)) return parseStryker(json);
-    if (Array.isArray(json.outcomes) && typeof json.cargo_mutants_version === "string") return parseCargoMutants(json);
-    if (isObject(json.stats) && Array.isArray(json.killed) && Array.isArray(json.escaped)) return parseInfection(json);
-    return null;
+    return readJsonReport(json);
   }
   if (/<mutations[\s>/]/.test(body.slice(0, 4000))) {
     const root = parseAs("XML", parseXml, body);
